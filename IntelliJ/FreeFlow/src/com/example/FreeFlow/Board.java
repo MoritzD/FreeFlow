@@ -22,8 +22,8 @@ public class Board extends View {
 
     private Rect m_rect = new Rect();
     private Paint m_paintGrid  = new Paint();
-    private Paint m_paintPath  = new Paint();
-    private Path m_path = new Path();
+   // private Paint m_paintPath  = new Paint();
+   // private Path m_path = new Path();
 
     private Cellpath[] m_cellPath;
 
@@ -49,13 +49,13 @@ public class Board extends View {
         m_paintGrid.setStyle( Paint.Style.STROKE );
         m_paintGrid.setColor( Color.GRAY );
 
-        m_paintPath.setStyle( Paint.Style.STROKE );
+       /* m_paintPath.setStyle( Paint.Style.STROKE );
         m_paintPath.setColor(Color.GREEN);
         m_paintPath.setStrokeWidth(32);
         m_paintPath.setStrokeCap( Paint.Cap.ROUND );
         m_paintPath.setStrokeJoin( Paint.Join.ROUND );
         m_paintPath.setAntiAlias( true );
-
+*/
 
     }
 
@@ -82,7 +82,7 @@ public class Board extends View {
         m_circles=m1_circles;
         m_cellPath = new Cellpath[m_circles.length];
         for(int i = 0; i< m_cellPath.length;i++ ){
-            m_cellPath[i] = new Cellpath();
+            m_cellPath[i] = new Cellpath(m_circles[i][0].m_color);
         }
     }
 
@@ -103,23 +103,23 @@ public class Board extends View {
                 canvas.drawRect( m_rect, m_paintGrid );
             }
         }
-        m_path.reset();
+        m_cellPath[0].m_path.reset();
         if ( !m_cellPath[0].isEmpty() ) {
 
             List<Coordinate> colist = m_cellPath[0].getCoordinates();
             Coordinate co = colist.get( 0 );
-            m_path.moveTo( colToX(co.getCol()) + m_cellWidth / 2,
+            m_cellPath[0].m_path.moveTo( colToX(co.getCol()) + m_cellWidth / 2,
                     rowToY(co.getRow()) + m_cellHeight / 2 );
 
             for ( int i=1; i<colist.size(); ++i ) {
 
                 co = colist.get(i);
-                m_path.lineTo( colToX(co.getCol()) + m_cellWidth / 2,
+                m_cellPath[0].m_path.lineTo( colToX(co.getCol()) + m_cellWidth / 2,
                         rowToY(co.getRow()) + m_cellHeight / 2 );
 
             }
         }
-        canvas.drawPath( m_path, m_paintPath);
+        canvas.drawPath( m_cellPath[0].m_path, m_cellPath[0].m_paintPath);
     }
 
     private boolean areNeighbours( int c1, int r1, int c2, int r2 ) {
@@ -158,12 +158,12 @@ public class Board extends View {
         return true;
     }
 
-    public void setColor(int color){
+    /*public void setColor(int color){
         m_paintPath.setColor(color);
         invalidate();
 
 
-    }
+    }*/
 
 
 }
