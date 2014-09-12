@@ -18,6 +18,8 @@ public class Board extends View {
     private int m_cellWidth;
     private int m_cellHeight;
 
+    private Circle[][] m_circles;
+
     private Rect m_rect = new Rect();
     private Paint m_paintGrid  = new Paint();
     private Paint m_paintPath  = new Paint();
@@ -53,6 +55,8 @@ public class Board extends View {
         m_paintPath.setStrokeCap( Paint.Cap.ROUND );
         m_paintPath.setStrokeJoin( Paint.Join.ROUND );
         m_paintPath.setAntiAlias( true );
+
+
     }
 
     @Override
@@ -70,10 +74,22 @@ public class Board extends View {
         int sw = Math.max(1, (int) m_paintGrid.getStrokeWidth());
         m_cellWidth  = (xNew - getPaddingLeft() - getPaddingRight() - sw) / NUM_CELLS;
         m_cellHeight = (yNew - getPaddingTop() - getPaddingBottom() - sw) / NUM_CELLS;
+        Circle[][] m1_circles = {{new Circle(colToX(0),rowToY(0),Color.GREEN,m_cellWidth),new Circle(colToX(1),rowToY(4),Color.GREEN,m_cellWidth)},
+                {new Circle(colToX(2),rowToY(0),Color.RED,m_cellWidth),new Circle(colToX(1),rowToY(3),Color.RED,m_cellWidth)},
+                {new Circle(colToX(4),rowToY(0),Color.WHITE,m_cellWidth),new Circle(colToX(3),rowToY(3),Color.WHITE,m_cellWidth)},
+                {new Circle(colToX(2),rowToY(1),Color.YELLOW,m_cellWidth),new Circle(colToX(2),rowToY(4),Color.YELLOW,m_cellWidth)},
+                {new Circle(colToX(4),rowToY(1),Color.BLUE,m_cellWidth),new Circle(colToX(3),rowToY(4),Color.BLUE,m_cellWidth)}};
+        m_circles=m1_circles;
     }
 
     @Override
     protected void onDraw( Canvas canvas ) {
+
+        for(int i=0; i<5;i++){
+            for (int e =0;e<2;e++){
+                m_circles[i][e].draw(canvas);
+            }
+        }
 
         for ( int r=0; r<NUM_CELLS; ++r ) {
             for (int c = 0; c<NUM_CELLS; ++c) {
