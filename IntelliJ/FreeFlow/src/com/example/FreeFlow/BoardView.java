@@ -29,6 +29,14 @@ public class BoardView extends View {
     private String m_board = "";
     private OnMoveEventHandler m_handler = null;
 
+    private Circle[][] m_circles = {{new Circle(colToX(0),rowToY(0),Color.GREEN,m_cellSize),new Circle(colToX(1),rowToY(4),Color.GREEN,m_cellSize)},
+            {new Circle(colToX(2),rowToY(0),Color.RED,m_cellSize),new Circle(colToX(1),rowToY(3),Color.RED,m_cellSize)},
+            {new Circle(colToX(4),rowToY(0),Color.WHITE,m_cellSize),new Circle(colToX(3),rowToY(3),Color.WHITE,m_cellSize)},
+            {new Circle(colToX(2),rowToY(1),Color.YELLOW,m_cellSize),new Circle(colToX(2),rowToY(4),Color.YELLOW,m_cellSize)},
+            {new Circle(colToX(4),rowToY(1),Color.BLUE,m_cellSize),new Circle(colToX(3),rowToY(4),Color.BLUE,m_cellSize)}};
+
+    int x,y;
+
 
 
     public BoardView(Context context, AttributeSet attrs) {
@@ -93,6 +101,15 @@ public class BoardView extends View {
                 canvas.drawRect( m_rect, m_paintGrid );
             }
         }
+
+
+        for(int i=0; i<5;i++){
+            for (int e =0;e<2;e++){
+                m_circles[i][e].draw(canvas);
+            }
+        }
+
+
 
         for ( int r=0; r<NUM_CELLS; ++r ) {
             for (int c = 0; c<NUM_CELLS; ++c) {
