@@ -1,6 +1,13 @@
 /**
  * Created by Sami on 08.09.14.
  */
+package com.example.FreeFlow;
+
+import android.app.Activity;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.os.Bundle;
+
 public class PlayActivity extends Activity {
 
     @Override
@@ -13,10 +20,10 @@ public class PlayActivity extends Activity {
 
         int color = settings.getInt("pathColor", Color.CYAN);
 
+
+
         //Board board = (Board) findViewById(R.id.board);
         //board.setColor(color);
->>>>>>> origin/master
-
     }
 
 }

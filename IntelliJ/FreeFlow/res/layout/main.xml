@@ -26,5 +26,7 @@
             android:text="About"
             android:onClick="buttonClick"
             />
+
+
 </LinearLayout>
 
