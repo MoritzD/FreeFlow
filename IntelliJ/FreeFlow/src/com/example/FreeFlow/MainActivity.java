@@ -15,6 +15,5 @@ public class MainActivity extends Activity {
 
     test1=2;
 
-
     }
 }
