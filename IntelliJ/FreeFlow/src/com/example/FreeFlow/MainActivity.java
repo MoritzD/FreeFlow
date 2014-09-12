@@ -10,7 +10,6 @@ public class MainActivity extends Activity {
     /**
      * Called when the activity is first created.
      */
-    int test1,test2,test3;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,7 +20,7 @@ public class MainActivity extends Activity {
         Button button = (Button) view;
         int id = button.getId();
         if (id == R.id.buttonPlay) {
-            startActivity(new Intent(this, PlayActivity.class));
+            startActivity(new Intent(getApplicationContext(), PlayActivity.class));
         }
     }
 

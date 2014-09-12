@@ -17,12 +17,12 @@ public class PlayActivity extends Activity {
         setContentView(R.layout.play);
 
 
-        SharedPreferences settings = getSharedPreferences("ColorPref", MODE_PRIVATE);
+        //SharedPreferences settings = getSharedPreferences("ColorPref", MODE_PRIVATE);
 
-        int color = settings.getInt("pathColor", Color.CYAN);
+        //int color = settings.getInt("pathColor", Color.CYAN);
 
         Board board = (Board) findViewById(R.id.board);
-        board.setColor(color);
+        //board.setColor(color);
 
     }
 
