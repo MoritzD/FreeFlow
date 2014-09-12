@@ -25,7 +25,7 @@ public class Board extends View {
     private Paint m_paintPath  = new Paint();
     private Path m_path = new Path();
 
-    private Cellpath m_cellPath = new Cellpath();
+    private Cellpath[] m_cellPath;
 
     private int xToCol( int x ) {
         return (x - getPaddingLeft()) / m_cellWidth;
@@ -80,6 +80,10 @@ public class Board extends View {
                 {new Circle(colToX(2),rowToY(1),Color.YELLOW,m_cellWidth),new Circle(colToX(2),rowToY(4),Color.YELLOW,m_cellWidth)},
                 {new Circle(colToX(4),rowToY(1),Color.BLUE,m_cellWidth),new Circle(colToX(3),rowToY(4),Color.BLUE,m_cellWidth)}};
         m_circles=m1_circles;
+        m_cellPath = new Cellpath[m_circles.length];
+        for(int i = 0; i< m_cellPath.length;i++ ){
+            m_cellPath[i] = new Cellpath();
+        }
     }
 
     @Override
@@ -100,9 +104,9 @@ public class Board extends View {
             }
         }
         m_path.reset();
-        if ( !m_cellPath.isEmpty() ) {
+        if ( !m_cellPath[0].isEmpty() ) {
 
-            List<Coordinate> colist = m_cellPath.getCoordinates();
+            List<Coordinate> colist = m_cellPath[0].getCoordinates();
             Coordinate co = colist.get( 0 );
             m_path.moveTo( colToX(co.getCol()) + m_cellWidth / 2,
                     rowToY(co.getRow()) + m_cellHeight / 2 );
@@ -136,16 +140,16 @@ public class Board extends View {
         }
 
         if ( event.getAction() == MotionEvent.ACTION_DOWN ) {
-            m_cellPath.reset();
-            m_cellPath.append( new Coordinate(c,r) );
+            m_cellPath[0].reset();
+            m_cellPath[0].append( new Coordinate(c,r) );
         }
         else if ( event.getAction() == MotionEvent.ACTION_MOVE ) {
 
-            if ( !m_cellPath.isEmpty() ) {
-                List<Coordinate> coordinateList = m_cellPath.getCoordinates();
+            if ( !m_cellPath[0].isEmpty() ) {
+                List<Coordinate> coordinateList = m_cellPath[0].getCoordinates();
                 Coordinate last = coordinateList.get(coordinateList.size()-1);
                 if ( areNeighbours(last.getCol(),last.getRow(), c, r)) {
-                    m_cellPath.append(new Coordinate(c, r));
+                    m_cellPath[0].append(new Coordinate(c, r));
                     invalidate();
 
                 }
