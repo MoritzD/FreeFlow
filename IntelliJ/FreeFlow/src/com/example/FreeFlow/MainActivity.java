@@ -7,7 +7,7 @@ public class MainActivity extends Activity {
     /**
      * Called when the activity is first created.
      */
-    int test;
+    int test1;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
