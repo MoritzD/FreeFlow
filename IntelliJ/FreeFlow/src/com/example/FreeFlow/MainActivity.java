@@ -16,8 +16,6 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-    test1=2;
-
     }
     public void buttonClick (View view) {
         Button button = (Button) view;
