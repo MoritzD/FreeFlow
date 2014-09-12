@@ -1,7 +1,10 @@
 package com.example.FreeFlow;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 public class MainActivity extends Activity {
     /**
@@ -16,4 +19,12 @@ public class MainActivity extends Activity {
     test1=2;
 
     }
+    public void buttonClick (View view) {
+        Button button = (Button) view;
+        int id = button.getId();
+        if (id == R.id.buttonPlay) {
+            startActivity(new Intent(this, PlayActivity.class));
+        }
+    }
+
 }
