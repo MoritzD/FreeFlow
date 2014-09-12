@@ -18,6 +18,8 @@ public class Board extends View {
     private int m_cellWidth;
     private int m_cellHeight;
 
+    private int m_drawPath;
+
     private Circle[][] m_circles;
 
     private Rect m_rect = new Rect();
@@ -81,7 +83,9 @@ public class Board extends View {
                 {new Circle(colToX(4),rowToY(1),Color.BLUE,m_cellWidth),new Circle(colToX(3),rowToY(4),Color.BLUE,m_cellWidth)}};
         m_circles=m1_circles;
         m_cellPath = new Cellpath[m_circles.length];
+
         for(int i = 0; i< m_cellPath.length;i++ ){
+
             m_cellPath[i] = new Cellpath(m_circles[i][0].m_color);
         }
     }
@@ -89,11 +93,13 @@ public class Board extends View {
     @Override
     protected void onDraw( Canvas canvas ) {
 
+
         for(int i=0; i<5;i++){
             for (int e =0;e<2;e++){
                 m_circles[i][e].draw(canvas);
             }
         }
+
 
         for ( int r=0; r<NUM_CELLS; ++r ) {
             for (int c = 0; c<NUM_CELLS; ++c) {
@@ -103,23 +109,26 @@ public class Board extends View {
                 canvas.drawRect( m_rect, m_paintGrid );
             }
         }
-        m_cellPath[0].m_path.reset();
-        if ( !m_cellPath[0].isEmpty() ) {
 
-            List<Coordinate> colist = m_cellPath[0].getCoordinates();
-            Coordinate co = colist.get( 0 );
-            m_cellPath[0].m_path.moveTo( colToX(co.getCol()) + m_cellWidth / 2,
-                    rowToY(co.getRow()) + m_cellHeight / 2 );
+        for (Cellpath aM_cellPath : m_cellPath) {
+            m_cellPath[m_drawPath].m_path.reset();
+            if (!aM_cellPath.isEmpty()) {
 
-            for ( int i=1; i<colist.size(); ++i ) {
+                List<Coordinate> colist = aM_cellPath.getCoordinates();
+                Coordinate co = colist.get(0);
+                aM_cellPath.m_path.moveTo(colToX(co.getCol()) + m_cellWidth / 2,
+                        rowToY(co.getRow()) + m_cellHeight / 2);
 
-                co = colist.get(i);
-                m_cellPath[0].m_path.lineTo( colToX(co.getCol()) + m_cellWidth / 2,
-                        rowToY(co.getRow()) + m_cellHeight / 2 );
+                for (int i = 1; i < colist.size(); ++i) {
 
+                    co = colist.get(i);
+                    aM_cellPath.m_path.lineTo(colToX(co.getCol()) + m_cellWidth / 2,
+                            rowToY(co.getRow()) + m_cellHeight / 2);
+
+                }
             }
+            canvas.drawPath(aM_cellPath.m_path, aM_cellPath.m_paintPath);
         }
-        canvas.drawPath( m_cellPath[0].m_path, m_cellPath[0].m_paintPath);
     }
 
     private boolean areNeighbours( int c1, int r1, int c2, int r2 ) {
@@ -135,21 +144,33 @@ public class Board extends View {
         int c = xToCol( x );
         int r = yToRow( y );
 
+        boolean found = false;
+        for( int i = 0; i < m_circles.length; i++){
+            for( int e = 0; e <= 1; e++){
+                if (m_circles[i][e].isTouched(colToX(c), rowToY(r))) {
+                    m_drawPath = i;
+                    found = true;
+                    break;
+                }
+            }
+            if (found) break;
+        }
+
         if ( c >= NUM_CELLS || r >= NUM_CELLS ) {
             return true;
         }
 
         if ( event.getAction() == MotionEvent.ACTION_DOWN ) {
-            m_cellPath[0].reset();
-            m_cellPath[0].append( new Coordinate(c,r) );
+            m_cellPath[m_drawPath].reset();
+            m_cellPath[m_drawPath].append( new Coordinate(c,r) );
         }
         else if ( event.getAction() == MotionEvent.ACTION_MOVE ) {
 
-            if ( !m_cellPath[0].isEmpty() ) {
-                List<Coordinate> coordinateList = m_cellPath[0].getCoordinates();
+            if ( !m_cellPath[m_drawPath].isEmpty() ) {
+                List<Coordinate> coordinateList = m_cellPath[m_drawPath].getCoordinates();
                 Coordinate last = coordinateList.get(coordinateList.size()-1);
                 if ( areNeighbours(last.getCol(),last.getRow(), c, r)) {
-                    m_cellPath[0].append(new Coordinate(c, r));
+                    m_cellPath[m_drawPath].append(new Coordinate(c, r));
                     invalidate();
 
                 }

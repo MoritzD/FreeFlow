@@ -35,4 +35,13 @@ public class Circle {
         m_shape.draw(canvas);
     }
 
+
+    public boolean isTouched(int t_x, int t_y){
+
+        if( t_x == x && t_y == y){
+            return true;
+        }
+        else return false;
+    }
+
 }
