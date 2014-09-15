@@ -6,17 +6,24 @@ package com.example.FreeFlow;
 
 import android.content.Context;
 import android.graphics.*;
+import android.os.Bundle;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 
 import java.util.List;
 
 public class Board extends View {
 
     private final int NUM_CELLS = 5;
-    private int m_cellWidth;
-    private int m_cellHeight;
+
+    protected static int m_cellWidth;
+    protected static int m_cellHeight;
+    protected static int m_paddingLeft;
+    protected static int m_paddingTop;
 
     private int m_drawPath;
 
@@ -24,10 +31,11 @@ public class Board extends View {
 
     private Rect m_rect = new Rect();
     private Paint m_paintGrid  = new Paint();
-   // private Paint m_paintPath  = new Paint();
-   // private Path m_path = new Path();
 
     private Cellpath[] m_cellPath;
+    private boolean mayDraw = false;
+    private boolean onCircle = false;
+    private boolean onPath = false;
 
     private int xToCol( int x ) {
         return (x - getPaddingLeft()) / m_cellWidth;
@@ -51,24 +59,23 @@ public class Board extends View {
         m_paintGrid.setStyle( Paint.Style.STROKE );
         m_paintGrid.setColor( Color.GRAY );
 
-       /* m_paintPath.setStyle( Paint.Style.STROKE );
-        m_paintPath.setColor(Color.GREEN);
-        m_paintPath.setStrokeWidth(32);
-        m_paintPath.setStrokeCap( Paint.Cap.ROUND );
-        m_paintPath.setStrokeJoin( Paint.Join.ROUND );
-        m_paintPath.setAntiAlias( true );
-*/
-
     }
+
 
     @Override
     protected void onMeasure( int widthMeasureSpec, int heightMeasureSpec ) {
+
         super.onMeasure( widthMeasureSpec, heightMeasureSpec );
+
         int width  = getMeasuredWidth() - getPaddingLeft() - getPaddingRight();
         int height = getMeasuredHeight() - getPaddingTop() - getPaddingBottom();
         int size = Math.min(width, height);
+
         setMeasuredDimension( size + getPaddingLeft() + getPaddingRight(),
                 size + getPaddingTop() + getPaddingBottom() );
+
+        m_paddingLeft = getPaddingLeft();
+        m_paddingTop = getPaddingTop();
     }
 
     @Override
@@ -76,17 +83,19 @@ public class Board extends View {
         int sw = Math.max(1, (int) m_paintGrid.getStrokeWidth());
         m_cellWidth  = (xNew - getPaddingLeft() - getPaddingRight() - sw) / NUM_CELLS;
         m_cellHeight = (yNew - getPaddingTop() - getPaddingBottom() - sw) / NUM_CELLS;
-        Circle[][] m1_circles = {{new Circle(colToX(0),rowToY(0),Color.GREEN,m_cellWidth),new Circle(colToX(1),rowToY(4),Color.GREEN,m_cellWidth)},
-                {new Circle(colToX(2),rowToY(0),Color.RED,m_cellWidth),new Circle(colToX(1),rowToY(3),Color.RED,m_cellWidth)},
-                {new Circle(colToX(4),rowToY(0),Color.WHITE,m_cellWidth),new Circle(colToX(3),rowToY(3),Color.WHITE,m_cellWidth)},
-                {new Circle(colToX(2),rowToY(1),Color.YELLOW,m_cellWidth),new Circle(colToX(2),rowToY(4),Color.YELLOW,m_cellWidth)},
-                {new Circle(colToX(4),rowToY(1),Color.BLUE,m_cellWidth),new Circle(colToX(3),rowToY(4),Color.BLUE,m_cellWidth)}};
+
+        Circle[][] m1_circles = {{new Circle(new Coordinate(0,0),Color.GREEN,m_cellWidth),new Circle(new Coordinate(1,4),Color.GREEN,m_cellWidth)},
+                {new Circle(new Coordinate(2,0),Color.RED,m_cellWidth),new Circle(new Coordinate(1,3),Color.RED,m_cellWidth)},
+                {new Circle(new Coordinate(4,0),Color.WHITE,m_cellWidth),new Circle(new Coordinate(3,3),Color.WHITE,m_cellWidth)},
+                {new Circle(new Coordinate(2,1),Color.YELLOW,m_cellWidth),new Circle(new Coordinate(2,4),Color.YELLOW,m_cellWidth)},
+                {new Circle(new Coordinate(4,1),Color.BLUE,m_cellWidth),new Circle(new Coordinate(3,4),Color.BLUE,m_cellWidth)}};
+
         m_circles=m1_circles;
         m_cellPath = new Cellpath[m_circles.length];
 
         for(int i = 0; i< m_cellPath.length;i++ ){
 
-            m_cellPath[i] = new Cellpath(m_circles[i][0].m_color);
+            m_cellPath[i] = new Cellpath(m_circles[i][0].m_color, m_circles[i][0].position, m_circles[i][1].position);
         }
     }
 
@@ -111,7 +120,7 @@ public class Board extends View {
         }
 
         for (Cellpath aM_cellPath : m_cellPath) {
-            m_cellPath[m_drawPath].m_path.reset();
+            aM_cellPath.m_path.reset();
             if (!aM_cellPath.isEmpty()) {
 
                 List<Coordinate> colist = aM_cellPath.getCoordinates();
@@ -145,46 +154,78 @@ public class Board extends View {
         int r = yToRow( y );
 
         boolean found = false;
-        for( int i = 0; i < m_circles.length; i++){
-            for( int e = 0; e <= 1; e++){
-                if (m_circles[i][e].isTouched(colToX(c), rowToY(r))) {
-                    m_drawPath = i;
-                    found = true;
-                    break;
-                }
-            }
-            if (found) break;
-        }
+
 
         if ( c >= NUM_CELLS || r >= NUM_CELLS ) {
             return true;
         }
 
         if ( event.getAction() == MotionEvent.ACTION_DOWN ) {
-            m_cellPath[m_drawPath].reset();
-            m_cellPath[m_drawPath].append( new Coordinate(c,r) );
+
+            for (int i = 0; i < m_cellPath.length; i++){
+                if(m_cellPath[i].isTouched(new Coordinate(xToCol(x),yToRow(y)))){
+                    onPath=true;
+                    m_drawPath = i;
+                }
+            }
+
+
+            for( int i = 0; i < m_circles.length; i++){
+                for( int e = 0; e <= 1; e++){
+                    if (m_circles[i][e].isTouched(colToX(c), rowToY(r))) {
+                        m_drawPath = i;
+                        onCircle = true;
+                        found = true;
+                        break;
+                    }
+                }
+                if (found) break;
+            }
+
+            if(onCircle){
+                m_cellPath[m_drawPath].reset();
+                m_cellPath[m_drawPath].append( new Coordinate(c,r) );
+                mayDraw = true;
+            }
+            else if(onPath){
+                m_cellPath[m_drawPath].append( new Coordinate(c,r) );
+                mayDraw = true;
+            }
+
+            invalidate();
         }
         else if ( event.getAction() == MotionEvent.ACTION_MOVE ) {
 
-            if ( !m_cellPath[m_drawPath].isEmpty() ) {
-                List<Coordinate> coordinateList = m_cellPath[m_drawPath].getCoordinates();
-                Coordinate last = coordinateList.get(coordinateList.size()-1);
-                if ( areNeighbours(last.getCol(),last.getRow(), c, r)) {
-                    m_cellPath[m_drawPath].append(new Coordinate(c, r));
-                    invalidate();
-
+            for (Cellpath aM_cellPath : m_cellPath) {
+                if(!aM_cellPath.equals(m_cellPath[m_drawPath])){
+                    if(aM_cellPath.contains(new Coordinate(xToCol(x), yToRow(y)))){
+                        aM_cellPath.cutPath(new Coordinate(xToCol(x), yToRow(y)));
+                    }
                 }
             }
+
+
+            if(!m_cellPath[m_drawPath].isConnected()) {
+                if (!m_cellPath[m_drawPath].isEmpty()) {
+                    List<Coordinate> coordinateList = m_cellPath[m_drawPath].getCoordinates();
+                    Coordinate last = coordinateList.get(coordinateList.size() - 1);
+                    if (areNeighbours(last.getCol(), last.getRow(), c, r)) {
+                        m_cellPath[m_drawPath].append(new Coordinate(c, r));
+                        invalidate();
+
+                    }
+                }
+            }
+        }
+        else if (event.getAction() == MotionEvent.ACTION_UP){
+            mayDraw = false;
+            onCircle = false;
+            onPath = false;
+
         }
         return true;
     }
 
-    /*public void setColor(int color){
-        m_paintPath.setColor(color);
-        invalidate();
-
-
-    }*/
 
 
 }
