@@ -16,10 +16,13 @@ public class Circle {
     public int m_color;
     private Rect m_rect;
     private ShapeDrawable m_shape;
+    protected Coordinate position;
 
-    public Circle(int x, int y, int color,int cellSize){
-        this.x=x;
-        this.y=y;
+    public Circle(Coordinate co, int color,int cellSize){
+
+        this.x = co.getX();
+        this.y = co.getY();
+        position = co;
         m_color=color;
         m_cellSize=cellSize;
         m_shape = new ShapeDrawable( new OvalShape() );
@@ -27,7 +30,6 @@ public class Circle {
     }
 
     public void draw (Canvas canvas){
-        Log.d("Main  try to draw circle","bla");
         m_rect.set(x, y, x + m_cellSize, y + m_cellSize);
         m_rect.inset(m_cellSize / 10, m_cellSize / 10);
         m_shape.setBounds(m_rect);

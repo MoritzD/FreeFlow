@@ -13,6 +13,16 @@ public class Coordinate {
         m_row = row;
     }
 
+
+    public int getX() {
+        return m_col * Board.m_cellWidth + Board.m_paddingLeft;
+    }
+
+    public int getY() {
+        return m_row * Board.m_cellHeight + Board.m_paddingTop;
+    }
+
+
     public int getCol() {
         return m_col;
     }
