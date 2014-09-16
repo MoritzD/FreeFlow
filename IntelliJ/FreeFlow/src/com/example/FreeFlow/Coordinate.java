@@ -5,8 +5,8 @@ package com.example.FreeFlow;
  */
 public class Coordinate {
 
-    private int m_col;
-    private int m_row;
+    protected int m_col;
+    protected int m_row;
 
     Coordinate( int col, int row ) {
         m_col = col;

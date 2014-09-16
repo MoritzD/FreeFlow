@@ -29,13 +29,14 @@ public class Board extends View {
 
     private Circle[][] m_circles;
 
+
     private Rect m_rect = new Rect();
     private Paint m_paintGrid  = new Paint();
 
     private Cellpath[] m_cellPath;
-    private boolean mayDraw = false;
     private boolean onCircle = false;
     private boolean onPath = false;
+    private boolean onDrawCircle = false;
 
     private int xToCol( int x ) {
         return (x - getPaddingLeft()) / m_cellWidth;
@@ -170,6 +171,7 @@ public class Board extends View {
             }
 
 
+
             for( int i = 0; i < m_circles.length; i++){
                 for( int e = 0; e <= 1; e++){
                     if (m_circles[i][e].isTouched(colToX(c), rowToY(r))) {
@@ -185,11 +187,9 @@ public class Board extends View {
             if(onCircle){
                 m_cellPath[m_drawPath].reset();
                 m_cellPath[m_drawPath].append( new Coordinate(c,r) );
-                mayDraw = true;
             }
             else if(onPath){
                 m_cellPath[m_drawPath].append( new Coordinate(c,r) );
-                mayDraw = true;
             }
 
             invalidate();
@@ -204,21 +204,36 @@ public class Board extends View {
                 }
             }
 
+            Coordinate currentcoord = new Coordinate(c, r);
 
-            if(!m_cellPath[m_drawPath].isConnected()) {
-                if (!m_cellPath[m_drawPath].isEmpty()) {
-                    List<Coordinate> coordinateList = m_cellPath[m_drawPath].getCoordinates();
-                    Coordinate last = coordinateList.get(coordinateList.size() - 1);
-                    if (areNeighbours(last.getCol(), last.getRow(), c, r)) {
-                        m_cellPath[m_drawPath].append(new Coordinate(c, r));
-                        invalidate();
+            for(int i = 0; i < m_circles.length; i++){
+                if(i!=m_drawPath){
+                    if(m_circles[i][0].position.equals(currentcoord) || m_circles[i][1].position.equals(currentcoord) ){
+                        onDrawCircle = false;
+                        break;
+                    }
+                onDrawCircle = true;
 
+                }
+            }
+
+
+
+            if(onDrawCircle) {
+                if (!m_cellPath[m_drawPath].isConnected()) {
+                    if (!m_cellPath[m_drawPath].isEmpty()) {
+                        List<Coordinate> coordinateList = m_cellPath[m_drawPath].getCoordinates();
+                        Coordinate last = coordinateList.get(coordinateList.size() - 1);
+                        if (areNeighbours(last.getCol(), last.getRow(), c, r)) {
+                            m_cellPath[m_drawPath].append(new Coordinate(c, r));
+                            invalidate();
+
+                        }
                     }
                 }
             }
         }
         else if (event.getAction() == MotionEvent.ACTION_UP){
-            mayDraw = false;
             onCircle = false;
             onPath = false;
 
