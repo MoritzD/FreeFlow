@@ -41,21 +41,13 @@ public class MainActivity extends Activity {
             e.printStackTrace();
         }
 
-        try{
-            List<Challenge> challenge = new ArrayList<Challenge>();
-            readChallenge(getAssets().open("packs/regular.xml"), challenge);
-            mGlobals.mChallenge = challenge;
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
 
     }
     public void buttonClick (View view) {
         Button button = (Button) view;
         int id = button.getId();
         if (id == R.id.buttonPlay) {
-            startActivity(new Intent(getApplicationContext(), ChallengeList.class));
+            startActivity(new Intent(getApplicationContext(), PackList.class));
         }
     }
 
@@ -89,49 +81,6 @@ public class MainActivity extends Activity {
     }
 
 
-    private void readChallenge( InputStream is, List<Challenge> challenge){
 
-
-        try {
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dbBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dbBuilder.parse(is);
-            NodeList nList = doc.getElementsByTagName("challenge");
-
-            for( int c = 0; c < nList.getLength(); ++c){
-                List<Puzzle> cList = new ArrayList<Puzzle>();
-                Node nNode = nList.item(c);
-
-                if( nNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Element oNode = (Element) nNode;
-                    String name = oNode.getAttribute("name");
-
-                    NodeList nListInner = doc.getElementsByTagName("puzzle");
-
-                    for(int in = 0; in < nListInner.getLength(); ++in) {
-                        Node innerNode = nListInner.item(in);
-
-                        if(innerNode.getNodeType() == Node.ELEMENT_NODE) {
-                            Element eNode = (Element) innerNode;
-                            String id = eNode.getAttribute("id");
-                            String size = eNode.getElementsByTagName("size").item(0).getFirstChild().getNodeValue();
-                            String flows = eNode.getElementsByTagName("flows").item(0).getFirstChild().getNodeValue();
-                            cList.add(new Puzzle(id, size, flows));
-                        }
-
-                    }
-
-
-                    challenge.add(new Challenge(name, cList));
-
-                }
-
-            }
-
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-    }
 
 }
