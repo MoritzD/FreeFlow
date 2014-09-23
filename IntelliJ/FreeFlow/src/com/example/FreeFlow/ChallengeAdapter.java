@@ -23,7 +23,7 @@ public class ChallengeAdapter extends ArrayAdapter<Challenge> {
 
     public ChallengeAdapter(Context context, int resource, List<Challenge> objects){
 
-        super(context, resource, objects);
+        super(context, resource);
         this.context = context;
         this.list = objects;
 
