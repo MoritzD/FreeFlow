@@ -17,7 +17,7 @@ public class PuzzleGrid extends Activity {
     Challenge mChallenge;
     Context mContext;
     Global mGlobal;
-
+    private int challengeId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -28,6 +28,7 @@ public class PuzzleGrid extends Activity {
 
         Bundle b = getIntent().getExtras();
         final int cId = b.getInt("id");
+        challengeId = cId;
         for(int i = 0; i < mGlobal.mChallenge.size(); i++){
             if(mGlobal.mChallenge.get(i).mId == cId){
                 mChallenge = mGlobal.mChallenge.get(i);
@@ -52,10 +53,11 @@ public class PuzzleGrid extends Activity {
 
                 Intent intent = new Intent(getApplicationContext(), PlayActivity.class);
                 Bundle b = new Bundle();
-                b.putInt("challegeId",cId);
+                b.putInt("challegeId",challengeId);
 
                 Puzzle clicked = (Puzzle) gridview.getItemAtPosition(position);
                 b.putInt("puzzleId", Integer.parseInt(clicked.getId()));
+                intent.putExtras(b);
                 startActivity(intent);
 
             }
