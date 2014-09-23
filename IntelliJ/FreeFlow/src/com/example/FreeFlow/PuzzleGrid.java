@@ -56,7 +56,7 @@ public class PuzzleGrid extends Activity {
                 b.putInt("challegeId",challengeId);
 
                 Puzzle clicked = (Puzzle) gridview.getItemAtPosition(position);
-                b.putInt("puzzleId", Integer.parseInt(clicked.getId()));
+                b.putInt("puzzleId", Integer.parseInt(clicked.getId())-1);
                 intent.putExtras(b);
                 startActivity(intent);
 
