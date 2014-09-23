@@ -10,12 +10,14 @@ public class Challenge {
 
     List<Puzzle> mPuzzle = new ArrayList<Puzzle>();
 
-    String mName;
+    public String mName;
+    public int mId;
 
-    public Challenge (String name, List<Puzzle> puzzles){
+    public Challenge (String name, int id, List<Puzzle> puzzles){
 
         mName = name;
         mPuzzle = puzzles;
+        mId = id;
 
     }
 

@@ -18,6 +18,10 @@
         </activity>
         <activity android:name=".ChallengeList">
         </activity>
+        <activity android:name=".PuzzleGrid">
+        </activity>
+        <activity android:name=".PackList">
+        </activity>
 
 
     </application>

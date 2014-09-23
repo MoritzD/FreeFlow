@@ -23,15 +23,17 @@ public class ChallengeList extends ListActivity {
 
         setListAdapter(adapter);
 
+
     }
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id){
-        //startActivity(new Intent(getApplicationContext(), PlayActivity.class));
 
-        Intent intent = new Intent(getApplicationContext(), PlayActivity.class);
+        Intent intent = new Intent(getApplicationContext(), PuzzleGrid.class);
         Bundle b = new Bundle();
-        b.putInt("key", position); //Your id
+
+        Challenge clicked = (Challenge) l.getItemAtPosition(position);
+        b.putInt("id", clicked.mId); //Your id
         intent.putExtras(b); //Put your id to your next Intent
         startActivity(intent);
     }
