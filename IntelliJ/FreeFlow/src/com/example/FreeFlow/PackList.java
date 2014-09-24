@@ -37,6 +37,7 @@ public class PackList extends ListActivity {
 
         setListAdapter(adapter);
         getActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle("Choose Package");
 
     }
 

@@ -481,9 +481,10 @@ public class Board extends View {
     }
 
     public void resetBoard(){
-        movesMade.setText("Moves:" + 0);
+        movesMade.setText("Moves: " + 0);
         pathsConnected = 0;
         moves = 0;
+        firstPath = true;
         for (Cellpath aMCellPath : mCellPath) {
             aMCellPath.reset();
             flowsConnected.setText("Flows: " + pathsConnected + "/" + mCellPath.size());

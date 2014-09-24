@@ -39,6 +39,7 @@ public class PuzzleGrid extends Activity {
         }
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle("Choose Level");
 
         final GridView gridview = (GridView) findViewById(R.id.gridview);
 

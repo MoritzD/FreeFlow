@@ -26,6 +26,7 @@ public class ChallengeList extends ListActivity {
 
         setListAdapter(adapter);
         getActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle("Choose Challenge");
 
     }
 
