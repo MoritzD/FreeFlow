@@ -126,14 +126,12 @@ public class PlayActivity extends Activity {
         public void onClick(View view) {
             switch(view.getId()){
                 case R.id.btn_prev:
-                    board.setLevel(Global.getInstance().mChallenge.get(challengeId).mPuzzle.get(puzzleId-1));
 
                     break;
                 case R.id.btn_reset:
                     board.resetBoard();
                     break;
                 case R.id.btn_next_p:
-                    board.setLevel(Global.getInstance().mChallenge.get(challengeId).mPuzzle.get(puzzleId+1));
                     break;
             }
         }
