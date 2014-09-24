@@ -37,7 +37,7 @@ public class PlayActivity extends Activity {
         puzzleId = b.getInt("puzzleId");
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
-
+        setTitle("Level " + (puzzleId+1));
         prev = (ImageButton) findViewById(R.id.btn_prev);
         reset = (ImageButton) findViewById(R.id.btn_reset);
         next = (ImageButton) findViewById(R.id.btn_next_p);
@@ -124,10 +124,8 @@ public class PlayActivity extends Activity {
                 board.setLevel(Global.getInstance().mChallenge.get(challengeId).mPuzzle.get(newPuzzleId));
                 board.loadLevel();
                 puzzleId = newPuzzleId;
-                //}
-                //else{
-                //   board.resetBoard();
-                //}
+                setTitle("Level " + (puzzleId+1));
+
             }
             if (resultCode == RESULT_CANCELED) {
                 //Write your code if there's no result
@@ -145,6 +143,7 @@ public class PlayActivity extends Activity {
                         board.setLevel(Global.getInstance().mChallenge.get(challengeId).mPuzzle.get(puzzleId - 1));
                         board.loadLevel();
                         puzzleId = puzzleId - 1;
+                        setTitle("Level " + (puzzleId+1));
                     } else {
 
                     }
@@ -157,6 +156,8 @@ public class PlayActivity extends Activity {
                         board.setLevel(Global.getInstance().mChallenge.get(challengeId).mPuzzle.get(puzzleId + 1));
                         board.loadLevel();
                         puzzleId = puzzleId + 1;
+                        setTitle("Level " + (puzzleId+1));
+
                     } else {
                         //bam
                     }
