@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 /**
@@ -17,7 +20,12 @@ import android.widget.TextView;
  */
 public class PlayActivity extends Activity {
     Board board = null;
-    int challegeId;
+    onClickListener ocl;
+
+    ImageButton prev;
+    ImageButton reset;
+    ImageButton next;
+    int challengeId;
     int puzzleId;
 
     @Override
@@ -25,15 +33,25 @@ public class PlayActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.play);
 
+        ocl = new onClickListener();
+
+
         Bundle b = getIntent().getExtras();
-        challegeId = b.getInt("challengeId");
+        challengeId = b.getInt("challengeId");
         puzzleId = b.getInt("puzzleId");
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //SharedPreferences settings = getSharedPreferences("ColorPref", MODE_PRIVATE);
+        prev = (ImageButton) findViewById(R.id.btn_prev);
+        reset = (ImageButton) findViewById(R.id.btn_reset);
+        next = (ImageButton) findViewById(R.id.btn_next_p);
 
         //int color = settings.getInt("pathColor", Color.CYAN);
+
+        prev.setOnClickListener(ocl);
+        reset.setOnClickListener(ocl);
+        next.setOnClickListener(ocl);
+
 
         board = (Board) findViewById(R.id.board);
 
@@ -46,17 +64,12 @@ public class PlayActivity extends Activity {
         board.setSound(Sou);
         board.setActivity(this);
 
-        board.setLevel(Global.getInstance().mChallenge.get(challegeId).mPuzzle.get(puzzleId));
+        board.setLevel(Global.getInstance().mChallenge.get(challengeId).mPuzzle.get(puzzleId));
 
         board.setTextFields((TextView) findViewById(R.id.flowsConnected),
                 (TextView) findViewById(R.id.movesMade),
                 (TextView) findViewById(R.id.bestMoves));
 
-
-
-
-        //board.loadLevel(Global.getInstance().mChallenge.get(0).mPuzzle.get(0));
-        //board.setColor(color);
 
     }
 
@@ -107,18 +120,21 @@ public class PlayActivity extends Activity {
         //finish();
 
     }
+    protected class onClickListener implements View.OnClickListener {
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        @Override
+        public void onClick(View view) {
+            switch(view.getId()){
+                case R.id.btn_prev:
+                    board.setLevel(Global.getInstance().mChallenge.get(challengeId).mPuzzle.get(puzzleId-1));
 
-        if (requestCode == 1) {
-            if(resultCode == RESULT_OK){
-               int newChallenge = data.getIntExtra("challengeId",0);
-               int newPuzzle = data.getIntExtra("puzzleId",0);
-
-                board.setLevel(Global.getInstance().mChallenge.get(newChallenge).mPuzzle.get(newPuzzle));
-            }
-            if (resultCode == RESULT_CANCELED) {
-                //Write your code if there's no result
+                    break;
+                case R.id.btn_reset:
+                    board.resetBoard();
+                    break;
+                case R.id.btn_next_p:
+                    board.setLevel(Global.getInstance().mChallenge.get(challengeId).mPuzzle.get(puzzleId+1));
+                    break;
             }
         }
     }
