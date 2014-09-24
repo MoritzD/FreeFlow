@@ -12,12 +12,14 @@ public class Challenge {
 
     public String mName;
     public int mId;
+    protected String mPackfile;
 
-    public Challenge (String name, int id, List<Puzzle> puzzles){
+    public Challenge (String name, int id, String packfile, List<Puzzle> puzzles){
 
         mName = name;
         mPuzzle = puzzles;
         mId = id;
+        mPackfile = packfile;
 
     }
 

@@ -5,6 +5,7 @@ package com.example.FreeFlow;
  */
 
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.*;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -15,12 +16,19 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Board extends View {
+
+    //DB
+    private ScoreAdapter scoreAdapter = new ScoreAdapter(getContext());
+    private SimpleCursorAdapter mSCA;
+    //
 
     private int NUM_CELLS = 3;
 
@@ -35,6 +43,7 @@ public class Board extends View {
 
     public int pathsConnected;
     public int moves;
+    protected int highscore;
 
     TextView flowsConnected;
     TextView movesMade;
@@ -316,6 +325,12 @@ public class Board extends View {
             }
             vibsound = vibsoundcut = false;
 
+            if(pathsConnected == mCellPath.size()){
+                //TODO: dialog
+                editDB(mPuzzle.mPackId, Integer.parseInt(mPuzzle.mChallengeId),
+                        Integer.parseInt(mPuzzle.mId),moves);
+            }
+
         }
 
 
@@ -393,15 +408,34 @@ public class Board extends View {
         }
 
 
-        movesMade.setText("Moves: " + 0);
-        flowsConnected.setText("Flows: " + pathsConnected + "/" + mCellPath.size());
-        best.setText("Best: " + 0);
-
        if(GlobalVibrate)
             v.vibrate(50);
       // if(GlobalSound)
       //      mpblop.start();
         invalidate();
+
+
+        //Load DB
+        Cursor cursor = scoreAdapter.queryScore(mPuzzle.mPackId,
+                Integer.parseInt(mPuzzle.mChallengeId), Integer.parseInt(mPuzzle.mId));
+        if(!cursor.equals(null)){
+            if (cursor.moveToFirst()){
+                do{
+                    highscore = cursor.getInt(cursor.getColumnIndex("best"));
+                    // do what ever you want here
+                }while(cursor.moveToNext());
+            }
+            cursor.close();
+        }
+        else highscore = 0;
+
+        movesMade.setText("Moves: " + 0);
+        flowsConnected.setText("Flows: " + pathsConnected + "/" + mCellPath.size());
+        best.setText("Best: " + highscore);
+
+
+
+
     }
     public void setLevel(Puzzle puz){
         mPuzzle=puz;
@@ -424,6 +458,17 @@ public class Board extends View {
     }
     public void setSound(boolean sou){
         GlobalSound = sou;
+    }
+
+
+    public void editDB(String pack, int challengeId, int levelId, int moves){
+
+        if(highscore == 0) scoreAdapter.insertScore(pack, challengeId, levelId, moves);
+        else if(highscore > moves) {
+            scoreAdapter.updateScore(pack, challengeId, levelId, moves);
+        }
+        best.setText("Best: " + moves);
+
     }
 
 

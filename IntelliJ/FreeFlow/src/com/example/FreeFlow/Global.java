@@ -9,6 +9,7 @@ public class Global {
 
     public List<Pack> mPacks;
     public List<Challenge> mChallenge;
+    public DBHelper dbHelper;
 
     private static Global mInstance = new Global();
 

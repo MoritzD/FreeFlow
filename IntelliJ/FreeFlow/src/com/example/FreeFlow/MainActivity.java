@@ -24,6 +24,7 @@ public class MainActivity extends Activity {
     private Global mGlobals =  Global.getInstance();
 
 
+
     /**
      * Called when the activity is first created.
      */
