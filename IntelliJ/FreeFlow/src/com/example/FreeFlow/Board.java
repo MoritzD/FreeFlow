@@ -31,11 +31,6 @@ public class Board extends View {
 
     private int m_drawPath;
 
-
-    TextView flowsConnected;
-    TextView movesMade;
-    TextView bestMoves;
-
     View vi;
 
     //private Circle[][] m_circles;
@@ -70,12 +65,6 @@ public class Board extends View {
     public Board(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-       /* flowsConnected = (TextView) findViewById(R.id.flowsConnected);
-        movesMade = (TextView) findViewById(R.id.movesMade);
-        bestMoves = (TextView) findViewById(R.id.bestMoves);
-        */
-
-        bestMoves.setText("asd");
 
         m_paintGrid.setStyle( Paint.Style.STROKE );
         m_paintGrid.setColor( Color.GRAY );
