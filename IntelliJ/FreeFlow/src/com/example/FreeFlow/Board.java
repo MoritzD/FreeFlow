@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,13 @@ public class Board extends View {
     public Puzzle mPuzzle = null;
 
     private int m_drawPath;
+
+
+    TextView flowsConnected;
+    TextView movesMade;
+    TextView bestMoves;
+
+    View vi;
 
     //private Circle[][] m_circles;
     List<Circle[]> mCircles = new ArrayList<Circle[]>();
@@ -61,6 +69,13 @@ public class Board extends View {
 
     public Board(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+       /* flowsConnected = (TextView) findViewById(R.id.flowsConnected);
+        movesMade = (TextView) findViewById(R.id.movesMade);
+        bestMoves = (TextView) findViewById(R.id.bestMoves);
+        */
+
+        bestMoves.setText("asd");
 
         m_paintGrid.setStyle( Paint.Style.STROKE );
         m_paintGrid.setColor( Color.GRAY );
@@ -300,6 +315,14 @@ public class Board extends View {
     }
     public void loadLevel(){
         if(mPuzzle==null) return;
+        int pathsConnected = 0;
+
+
+        for (Cellpath aMCellPath : mCellPath) {
+            if (aMCellPath.isConnected()) {
+                pathsConnected = pathsConnected + 1;
+            }
+        }
 
         int red=1,green=0,blue=0;
          String[] points=mPuzzle.getFlows().split(",");
@@ -371,6 +394,10 @@ public class Board extends View {
         mPuzzle=puz;
         invalidate();
     }
+
+
+
+
 
 
 }

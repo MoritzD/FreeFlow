@@ -13,9 +13,6 @@ import android.widget.TextView;
  */
 public class PlayActivity extends Activity {
 
-    TextView flowsConnected;
-    TextView movesMade;
-    TextView bestMoves;
 
 
     @Override
@@ -26,12 +23,6 @@ public class PlayActivity extends Activity {
         Bundle b = getIntent().getExtras();
         int challegeId = b.getInt("challengeId");
         int puzzleId = b.getInt("puzzleId");
-
-        flowsConnected = (TextView) findViewById(R.id.flowsConnected);
-        movesMade = (TextView) findViewById(R.id.movesMade);
-        bestMoves = (TextView) findViewById(R.id.bestMoves);
-
-
 
         //SharedPreferences settings = getSharedPreferences("ColorPref", MODE_PRIVATE);
 
