@@ -462,12 +462,11 @@ public class Board extends View {
 
 
     public void editDB(String pack, int challengeId, int levelId, int moves){
-
         if(highscore == 0) scoreAdapter.insertScore(pack, challengeId, levelId, moves);
         else if(highscore > moves) {
             scoreAdapter.updateScore(pack, challengeId, levelId, moves);
+            best.setText("Best: " + moves);
         }
-        best.setText("Best: " + moves);
 
     }
 
