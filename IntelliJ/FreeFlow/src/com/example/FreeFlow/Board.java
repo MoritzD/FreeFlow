@@ -17,9 +17,13 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +55,8 @@ public class Board extends View {
     TextView flowsConnected;
     TextView movesMade;
     TextView best;
+
+
 
     private boolean firstPath = true;
     private boolean firstPathRed = false;
@@ -239,6 +245,7 @@ public class Board extends View {
 
             invalidate();
         }
+
         else if ( event.getAction() == MotionEvent.ACTION_MOVE ) {
             Coordinate currentcoord = new Coordinate(c, r);
 
@@ -259,19 +266,19 @@ public class Board extends View {
 
 
             //Path on Circle
-            for (Circle[] cir : mCircles) {
-                if (mCircles.indexOf(cir) != m_drawPath) {
-                    if (cir[0].position.equals(currentcoord) || cir[1].position.equals(currentcoord)) {
-                        onDrawCircle = false;
-                        mayCut = false;
-                        break;
+                for (Circle[] cir : mCircles) {
+                    if (mCircles.indexOf(cir) != m_drawPath) {
+                        if (cir[0].position.equals(currentcoord) || cir[1].position.equals(currentcoord)) {
+                            onDrawCircle = false;
+                            mayCut = false;
+                            break;
+                        }
+                        onDrawCircle = true;
                     }
-                    onDrawCircle = true;
-                    mayCut = true;
                 }
-            }
 
-                //Path on own Circle
+
+                //Path on own Circle or on free space
                 if (onDrawCircle) {
                     if (!mCellPath.get(m_drawPath).isConnected()) {
                         if (!mCellPath.get(m_drawPath).isEmpty()) {
@@ -288,7 +295,7 @@ public class Board extends View {
                         vibsound = true;
                     }
                 }
-        }
+            }
         else if (event.getAction() == MotionEvent.ACTION_UP){
 
             pathsConnected = 0;
@@ -338,7 +345,7 @@ public class Board extends View {
 
 
         //set Booleans
-
+        mayCut = true;
         onCircle = false;
         onPath = false;
 
@@ -346,8 +353,6 @@ public class Board extends View {
     }
     public void loadLevel(){
         if(mPuzzle==null) return;
-        int pathsConnected = 0;
-
         pathsConnected = 0;
 
         int red=1,green=0,blue=0;
@@ -362,8 +367,12 @@ public class Board extends View {
             }
             String[] CircleSting = str.split(" ");
 
-            mCircles.add(new Circle[]{new Circle(new Coordinate(Integer.parseInt(CircleSting[0]), Integer.parseInt(CircleSting[1])), Color.rgb(255*red,255*green,255*blue) , m_cellWidth),
-                    new Circle(new Coordinate(Integer.parseInt(CircleSting[2]), Integer.parseInt(CircleSting[3])), Color.rgb(255*red,255*green,255*blue), m_cellWidth)});
+            mCircles.add(new Circle[]{new Circle(new Coordinate(Integer.parseInt(CircleSting[0]),
+                    Integer.parseInt(CircleSting[1])),
+                    Color.rgb(255*red,255*green,255*blue) , m_cellWidth),
+                    new Circle(new Coordinate(Integer.parseInt(CircleSting[2]),
+                            Integer.parseInt(CircleSting[3])),
+                            Color.rgb(255*red,255*green,255*blue), m_cellWidth)});
 
             if(red==1&&green==0&&blue==0) {
                 red=0;
@@ -443,6 +452,7 @@ public class Board extends View {
 
 
 
+
     }
     public void setLevel(Puzzle puz){
         mPuzzle=puz;
@@ -458,8 +468,8 @@ public class Board extends View {
         movesMade = moves;
         best = bestMoves;
 
-
     }
+
     public void setVibrate(boolean vib){
         GlobalVibrate = vib;
     }
@@ -472,13 +482,29 @@ public class Board extends View {
 
         myActivity.startDialog();
 
-        if(highscore == 0) scoreAdapter.insertScore(pack, challengeId, levelId, moves);
+        if(highscore == 0) {
+            scoreAdapter.insertScore(pack, challengeId, levelId, moves);
+        }
         else if(highscore > moves) {
             scoreAdapter.updateScore(pack, challengeId, levelId, moves);
-            best.setText("Best: " + moves);
         }
+        if(moves < highscore) best.setText("Best: " + moves);
 
     }
-    public void setActivity(PlayActivity act){ myActivity = act; }
+    public void setActivity(PlayActivity act){
+        myActivity = act;
+    }
+
+    public void resetBoard(){
+        movesMade.setText("Moves:" + 0);
+        pathsConnected = 0;
+        for (Cellpath aMCellPath : mCellPath) {
+            aMCellPath.reset();
+            flowsConnected.setText("Flows: " + pathsConnected + "/" + mCellPath.size());
+            invalidate();
+        }
+    }
+
+
 
 }
