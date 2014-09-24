@@ -6,7 +6,9 @@ package com.example.FreeFlow;
 
 import android.content.Context;
 import android.graphics.*;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,7 +33,7 @@ public class Board extends View {
 
     private int m_drawPath;
 
-    View vi;
+    private boolean vibrateconnedt=true,GlobalVibrate=true;
 
     //private Circle[][] m_circles;
     List<Circle[]> mCircles = new ArrayList<Circle[]>();
@@ -45,6 +47,8 @@ public class Board extends View {
     private boolean onCircle = false;
     private boolean onPath = false;
     private boolean onDrawCircle = false;
+    private Vibrator v;
+    public MediaPlayer mp;
 
     private int xToCol( int x ) {
         return (x - getPaddingLeft()) / m_cellWidth;
@@ -65,12 +69,14 @@ public class Board extends View {
     public Board(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-
         m_paintGrid.setStyle( Paint.Style.STROKE );
         m_paintGrid.setColor( Color.GRAY );
 
         //onSizeChanged(this.getWidth(),this.getHeight(),this.getWidth(),this.getHeight());
 
+        v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        //mp = MediaPlayer.create(context, R.raw.sound1);
+        //bla
     }
 
 
@@ -242,6 +248,8 @@ public class Board extends View {
                 if(!aM_cellPath.equals(mCellPath.get(m_drawPath))){
                     if(aM_cellPath.contains(new Coordinate(xToCol(x), yToRow(y)))){
                         aM_cellPath.cutPath(new Coordinate(xToCol(x), yToRow(y)));
+                        if(GlobalVibrate)
+                            v.vibrate(50);
                     }
                 }
             }
@@ -292,8 +300,16 @@ public class Board extends View {
                         if (areNeighbours(last.getCol(), last.getRow(), c, r)) {
                             mCellPath.get(m_drawPath).append(new Coordinate(c, r));
                             invalidate();
+                            vibrateconnedt=true;
 
                         }
+                    }
+                }
+                else{
+                    if(vibrateconnedt){
+                        if(GlobalVibrate)
+                            v.vibrate(50);
+                        vibrateconnedt=false;
                     }
                 }
             }
@@ -308,7 +324,6 @@ public class Board extends View {
     public void loadLevel(){
         if(mPuzzle==null) return;
         int pathsConnected = 0;
-
 
         for (Cellpath aMCellPath : mCellPath) {
             if (aMCellPath.isConnected()) {
@@ -375,6 +390,9 @@ public class Board extends View {
         for(Circle[] cir : mCircles){
             mCellPath.add( new Cellpath(cir[0].m_color, cir[0].position, cir[1].position));
         }
+
+       if(GlobalVibrate)
+            v.vibrate(50);
         invalidate();
     }
     public void setLevel(Puzzle puz){
@@ -385,10 +403,6 @@ public class Board extends View {
         //onSizeChanged(this.getWidth(),this.getHeight(),this.getWidth(),this.getHeight());
         invalidate();
     }
-
-
-
-
 
 
 }
