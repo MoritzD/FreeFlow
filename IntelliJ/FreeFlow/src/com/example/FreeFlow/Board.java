@@ -477,7 +477,6 @@ public class Board extends View {
         }
         best.setText("Best: " + moves);
 
-// arsch
     }
     public void setActivity(PlayActivity act){ myActivity = act; }
 
