@@ -377,8 +377,8 @@ public class Board extends View {
 
        if(GlobalVibrate)
             v.vibrate(50);
-       if(GlobalSound)
-            mpblop.start();
+      // if(GlobalSound)
+      //      mpblop.start();
         invalidate();
     }
     public void setLevel(Puzzle puz){
@@ -396,6 +396,12 @@ public class Board extends View {
         best = bestMoves;
 
 
+    }
+    public void setVibrate(boolean vib){
+        GlobalVibrate = vib;
+    }
+    public void setSound(boolean sou){
+        GlobalSound = sou;
     }
 
 

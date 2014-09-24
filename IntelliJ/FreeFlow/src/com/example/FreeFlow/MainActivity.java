@@ -49,6 +49,9 @@ public class MainActivity extends Activity {
         if (id == R.id.buttonPlay) {
             startActivity(new Intent(getApplicationContext(), PackList.class));
         }
+        if(id == R.id.buttonSettings){
+            startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+        }
     }
 
     private void readPack( InputStream is, List<Pack> packs){
