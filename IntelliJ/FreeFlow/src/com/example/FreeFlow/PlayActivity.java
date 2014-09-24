@@ -110,7 +110,7 @@ public class PlayActivity extends Activity {
     public void startDialog() {
         Intent intent = new Intent(getApplicationContext(), DialogActivity.class);
         Bundle b = new Bundle();
-        b.putInt("challengeId",challegeId);
+        b.putInt("challengeId",challengeId);
         b.putInt("puzzleId", puzzleId);
         intent.putExtras(b);
         startActivityForResult(intent, 1);

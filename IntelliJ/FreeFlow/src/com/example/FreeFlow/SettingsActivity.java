@@ -60,6 +60,8 @@ public class SettingsActivity extends Activity {
         int id = button.getId();
         if(id == R.id.deleteButton){
             // TODO: Put code here to Delete Database.
+            ScoreAdapter scoreAdapter = new ScoreAdapter(this);
+            scoreAdapter.dropBD();
         }
         if(id == R.id.buttonsave){
             finish();

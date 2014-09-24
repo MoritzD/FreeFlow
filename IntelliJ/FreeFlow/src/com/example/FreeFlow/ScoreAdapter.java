@@ -30,6 +30,13 @@ public class ScoreAdapter {
         return this;
     }
 
+    public ScoreAdapter dropBD(){
+        dbHelper = new DBHelper( mContext );
+        db = dbHelper.getWritableDatabase();
+        dbHelper.dropDatabase(db);
+        return this;
+    }
+
     public void close() {
         db.close();
     }
