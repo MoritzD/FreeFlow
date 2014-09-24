@@ -19,7 +19,7 @@ import java.util.List;
 
 public class Board extends View {
 
-    private final int NUM_CELLS = 5;
+    private int NUM_CELLS = 3;
 
     protected static int m_cellWidth;
     protected static int m_cellHeight;
@@ -65,7 +65,7 @@ public class Board extends View {
         m_paintGrid.setStyle( Paint.Style.STROKE );
         m_paintGrid.setColor( Color.GRAY );
 
-        onSizeChanged(this.getWidth(),this.getHeight(),this.getWidth(),this.getHeight());
+        //onSizeChanged(this.getWidth(),this.getHeight(),this.getWidth(),this.getHeight());
 
     }
 
@@ -89,6 +89,9 @@ public class Board extends View {
     @Override
     protected void onSizeChanged( int xNew, int yNew, int xOld, int yOld ) {
         int sw = Math.max(1, (int) m_paintGrid.getStrokeWidth());
+       /* if(mPuzzle!=null){
+            NUM_CELLS=Integer.parseInt(mPuzzle.getSize());
+        }*/
         m_cellWidth  = (xNew - getPaddingLeft() - getPaddingRight() - sw) / NUM_CELLS;
         m_cellHeight = (yNew - getPaddingTop() - getPaddingBottom() - sw) / NUM_CELLS;
 
@@ -311,16 +314,11 @@ public class Board extends View {
             while(str.startsWith(" ")){
                 str = str.substring(1);
             }
-            Log.d("aktueller String beim parsen:" , str);
             String[] CircleSting = str.split(" ");
-            Log.d("aktuelle nummer beim parsen0:" , CircleSting[0]);
-            Log.d("aktuelle nummer beim parsen1:" , CircleSting[1]);
-            Log.d("aktuelle nummer beim parsen2:" , CircleSting[2]);
-            Log.d("aktuelle nummer beim parsen3:" , CircleSting[3]);
-            //Log.d("aktuelle nummer beim parsen3:" , CircleSting[4]);
-            Log.d("anzahl:",""+CircleSting.length);
+
             mCircles.add(new Circle[]{new Circle(new Coordinate(Integer.parseInt(CircleSting[0]), Integer.parseInt(CircleSting[1])), Color.rgb(255*red,255*green,255*blue) , m_cellWidth),
                     new Circle(new Coordinate(Integer.parseInt(CircleSting[2]), Integer.parseInt(CircleSting[3])), Color.rgb(255*red,255*green,255*blue), m_cellWidth)});
+
             if(red==1&&green==0&&blue==0) {
                 red=0;
                 green=1;
@@ -369,6 +367,10 @@ public class Board extends View {
     }
     public void setLevel(Puzzle puz){
         mPuzzle=puz;
+        if(mPuzzle!=null)
+            NUM_CELLS = Integer.parseInt(mPuzzle.getSize());
+        //Log.d("Size:",mPuzzle.getSize());
+        //onSizeChanged(this.getWidth(),this.getHeight(),this.getWidth(),this.getHeight());
         invalidate();
     }
 
