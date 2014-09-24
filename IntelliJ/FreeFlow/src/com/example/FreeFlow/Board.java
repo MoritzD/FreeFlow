@@ -41,9 +41,11 @@ public class Board extends View {
     TextView best;
 
     private boolean firstPath = true;
+    private boolean firstPathRed = false;
     private int m_drawPath;
+    private boolean mayCut = true;
 
-    private boolean vibrateconnedt = true, GlobalVibrate = true, GlobalSound = true, vibsound = false, vibsoundcut = false;
+    private boolean GlobalVibrate = true, GlobalSound = true, vibsound = false, vibsoundcut = false;
 
     List<Circle[]> mCircles = new ArrayList<Circle[]>();
 
@@ -179,21 +181,32 @@ public class Board extends View {
 
         if ( event.getAction() == MotionEvent.ACTION_DOWN ) {
 
+
+            //Select drawPath
             for (Cellpath cell: mCellPath){
                 if(cell.isTouched(new Coordinate(xToCol(x),yToRow(y)))){
                     onPath=true;
                     m_drawPath = mCellPath.indexOf(cell);
                     if(firstPath) {
-                        prevPath = m_drawPath;
+                        if (m_drawPath == 0){
+                            firstPathRed = true;
+                        }
                         firstPath = false;
-                    }
-                }
+                    }                }
             }
 
+            //Did you touch a circle?
             for( Circle[] cir : mCircles){
                 for( int e = 0; e <= 1; e++){
                     if (cir[e].isTouched(colToX(c), rowToY(r))) {
                         m_drawPath = mCircles.indexOf(cir);
+                        if(firstPath) {
+                            if (m_drawPath == 0){
+                                firstPathRed = true;
+                            }
+                            firstPath = false;
+                        }
+
                         onCircle = true;
                         found = true;
                         break;
@@ -202,10 +215,12 @@ public class Board extends View {
                 if (found) break;
             }
 
+            //If on circle, reset drawPath
             if(onCircle){
                 mCellPath.get(m_drawPath).reset();
                 mCellPath.get(m_drawPath).append( new Coordinate(c,r) );
             }
+            //if you're on a path, keep drawing it
             else if(onPath){
                 mCellPath.get(m_drawPath).append( new Coordinate(c,r) );
             }
@@ -213,54 +228,54 @@ public class Board extends View {
             invalidate();
         }
         else if ( event.getAction() == MotionEvent.ACTION_MOVE ) {
-
-            for (Cellpath aM_cellPath : mCellPath) {
-                if(!aM_cellPath.equals(mCellPath.get(m_drawPath))){
-                    if(aM_cellPath.contains(new Coordinate(xToCol(x), yToRow(y)))){
-                        aM_cellPath.cutPath(new Coordinate(xToCol(x), yToRow(y)));
-                        vibsoundcut=true;
-
-                    }
-                }
-            }
-
             Coordinate currentcoord = new Coordinate(c, r);
 
+            //Cutting path
+            if (mayCut) {
+                if (!mCellPath.get(m_drawPath).isConnected) {
+                    for (Cellpath aM_cellPath : mCellPath) {
+                        if (!aM_cellPath.equals(mCellPath.get(m_drawPath))) {
+                            if (aM_cellPath.contains(new Coordinate(xToCol(x), yToRow(y)))) {
+                                aM_cellPath.cutPath(new Coordinate(xToCol(x), yToRow(y)));
+                                vibsoundcut = true;
 
-            for(Circle[] cir : mCircles){
-                if(mCircles.indexOf(cir)!=m_drawPath){
-                    if(cir[0].position.equals(currentcoord) || cir[1].position.equals(currentcoord) ){
-                        onDrawCircle = false;
-                        break;
-                    }
-                onDrawCircle = true;
-
-                }
-            }
-
-
-            if(onDrawCircle) {
-                if (!mCellPath.get(m_drawPath).isConnected()) {
-                    if (!mCellPath.get(m_drawPath).isEmpty()) {
-                        List<Coordinate> coordinateList = mCellPath.get(m_drawPath).getCoordinates();
-                        Coordinate last = coordinateList.get(coordinateList.size() - 1);
-                        if (areNeighbours(last.getCol(), last.getRow(), c, r)) {
-                            mCellPath.get(m_drawPath).append(new Coordinate(c, r));
-                            invalidate();
-                            vibrateconnedt=true;
-
-                            vibsound=false;
-
+                            }
                         }
                     }
                 }
-                else{
-
-                       vibsound=true;
+            }
 
 
+            //Path on Circle
+            for (Circle[] cir : mCircles) {
+                if (mCircles.indexOf(cir) != m_drawPath) {
+                    if (cir[0].position.equals(currentcoord) || cir[1].position.equals(currentcoord)) {
+                        onDrawCircle = false;
+                        mayCut = false;
+                        break;
+                    }
+                    onDrawCircle = true;
+                    mayCut = true;
                 }
             }
+
+                //Path on own Circle
+                if (onDrawCircle) {
+                    if (!mCellPath.get(m_drawPath).isConnected()) {
+                        if (!mCellPath.get(m_drawPath).isEmpty()) {
+                            List<Coordinate> coordinateList = mCellPath.get(m_drawPath).getCoordinates();
+                            Coordinate last = coordinateList.get(coordinateList.size() - 1);
+                            if (areNeighbours(last.getCol(), last.getRow(), c, r)) {
+                                mCellPath.get(m_drawPath).append(new Coordinate(c, r));
+                                invalidate();
+
+                                vibsound = false;
+                            }
+                        }
+                    } else {
+                        vibsound = true;
+                    }
+                }
         }
         else if (event.getAction() == MotionEvent.ACTION_UP){
 
@@ -272,17 +287,17 @@ public class Board extends View {
                 }
             }
 
-            if(prevPath != m_drawPath){
+            if((prevPath != m_drawPath) || firstPathRed){
                 moves = moves + 1;
                 prevPath = m_drawPath;
+                firstPathRed = false;
             }
 
             movesMade.setText("Moves: "+ moves);
             flowsConnected.setText("Flows: " + pathsConnected + "/" + mCellPath.size());
 
 
-            onCircle = false;
-            onPath = false;
+
             if(vibsound) {
                 if (GlobalVibrate)
                     v.vibrate(50);
@@ -302,6 +317,13 @@ public class Board extends View {
             vibsound = vibsoundcut = false;
 
         }
+
+
+        //set Booleans
+
+        onCircle = false;
+        onPath = false;
+
         return true;
     }
     public void loadLevel(){
