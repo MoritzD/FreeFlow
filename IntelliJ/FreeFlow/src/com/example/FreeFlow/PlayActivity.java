@@ -30,7 +30,9 @@ public class PlayActivity extends Activity {
 
         Board board = (Board) findViewById(R.id.board);
         board.setLevel(Global.getInstance().mChallenge.get(challegeId).mPuzzle.get(puzzleId));
-
+        board.setTextFields((TextView) findViewById(R.id.flowsConnected),
+                (TextView) findViewById(R.id.movesMade),
+                (TextView) findViewById(R.id.bestMoves));
 
 
         //board.loadLevel(Global.getInstance().mChallenge.get(0).mPuzzle.get(0));
