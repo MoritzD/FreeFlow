@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:padding="5dp" >
+    android:padding="5dp"
+    android:background="@drawable/levelframe">
     <TextView
         android:id="@+id/puzzle_id"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"/>
-</LinearLayout>
+        android:layout_height="fill_parent"
+        android:textSize="30sp"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_centerVertical="true"/>
+</RelativeLayout>
 
