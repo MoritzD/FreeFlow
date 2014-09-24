@@ -250,7 +250,6 @@ public class Board extends View {
             Coordinate currentcoord = new Coordinate(c, r);
 
             //Cutting path
-            if (mayCut) {
                 if (!mCellPath.get(m_drawPath).isConnected) {
                     for (Cellpath aM_cellPath : mCellPath) {
                         if (!aM_cellPath.equals(mCellPath.get(m_drawPath))) {
@@ -262,8 +261,6 @@ public class Board extends View {
                         }
                     }
                 }
-            }
-
 
             //Path on Circle
                 for (Circle[] cir : mCircles) {
@@ -444,7 +441,7 @@ public class Board extends View {
             cursor.close();
         }
         else highscore = 0;
-
+        moves = 0;
 
         movesMade.setText("Moves: " + 0);
         flowsConnected.setText("Flows: " + pathsConnected + "/" + mCellPath.size());
@@ -481,15 +478,17 @@ public class Board extends View {
 
     public void editDB(String pack, int challengeId, int levelId, int moves){
 
-        myActivity.startDialog();
-
         if(highscore == 0) {
             scoreAdapter.insertScore(pack, challengeId, levelId, moves);
+            best.setText("Best: " + moves);
         }
         else if(highscore > moves) {
             scoreAdapter.updateScore(pack, challengeId, levelId, moves);
         }
         if(moves < highscore) best.setText("Best: " + moves);
+
+        myActivity.startDialog();
+
 
     }
     public void setActivity(PlayActivity act){
