@@ -27,7 +27,7 @@ public class Cellpath {
 
         m_paintPath.setStyle( Paint.Style.STROKE );
         m_paintPath.setColor(color);
-        m_paintPath.setStrokeWidth(32);
+        m_paintPath.setStrokeWidth(50);
         m_paintPath.setStrokeCap( Paint.Cap.ROUND );
         m_paintPath.setStrokeJoin( Paint.Join.ROUND );
         m_paintPath.setAntiAlias( true );
