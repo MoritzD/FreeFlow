@@ -36,7 +36,7 @@ public class DialogActivity extends Activity {
 
                 resultIntent = new Intent();
                // resultIntent.putExtra("challengeId", challegeId);
-                if(puzzleId-1>0) {
+                if(puzzleId-1>=0) {
                     resultIntent.putExtra("puzzleId", puzzleId - 1);
                     setResult(Activity.RESULT_OK, resultIntent);
                     finish();
