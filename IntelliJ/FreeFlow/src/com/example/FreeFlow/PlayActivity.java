@@ -110,30 +110,64 @@ public class PlayActivity extends Activity {
     public void startDialog() {
         Intent intent = new Intent(getApplicationContext(), DialogActivity.class);
         Bundle b = new Bundle();
-        b.putInt("challengeId",challegeId);
+        b.putInt("challengeId",challengeId);
         b.putInt("puzzleId", puzzleId);
         intent.putExtras(b);
         startActivityForResult(intent, 1);
 
-
-
         //finish();
 
     }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK){
+                //int newChalenge = data.getIntExtra("challengeId",0);
+                int newPuzzleId = data.getIntExtra("puzzleId",0);
+
+                if(newPuzzleId != puzzleId) {
+                    board.setLevel(Global.getInstance().mChallenge.get(challengeId).mPuzzle.get(newPuzzleId));
+                    board.loadLevel();
+                    puzzleId = newPuzzleId;
+                }
+                else{
+                    board.resetBoard();
+                }
+            }
+            if (resultCode == RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
+    }
+
     protected class onClickListener implements View.OnClickListener {
 
         @Override
         public void onClick(View view) {
             switch(view.getId()){
                 case R.id.btn_prev:
-                    board.setLevel(Global.getInstance().mChallenge.get(challengeId).mPuzzle.get(puzzleId-1));
+                    if(puzzleId-1>0) {
+                        board.setLevel(Global.getInstance().mChallenge.get(challengeId).mPuzzle.get(puzzleId - 1));
+                        board.loadLevel();
+                        puzzleId = puzzleId - 1;
+                    }
+                    else{
 
+                    }
                     break;
                 case R.id.btn_reset:
                     board.resetBoard();
                     break;
                 case R.id.btn_next_p:
-                    board.setLevel(Global.getInstance().mChallenge.get(challengeId).mPuzzle.get(puzzleId+1));
+                    if(puzzleId+1<Global.getInstance().mChallenge.get(challengeId).mPuzzle.size()) {
+                        board.setLevel(Global.getInstance().mChallenge.get(challengeId).mPuzzle.get(puzzleId + 1));
+                        board.loadLevel();
+                        puzzleId = puzzleId + 1;
+                    }
+                    else{
+                        //bam
+                    }
                     break;
             }
         }
