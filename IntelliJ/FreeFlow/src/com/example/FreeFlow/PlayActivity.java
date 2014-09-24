@@ -17,7 +17,8 @@ import android.widget.TextView;
  */
 public class PlayActivity extends Activity {
     Board board = null;
-
+    int challegeId;
+    int puzzleId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -25,8 +26,8 @@ public class PlayActivity extends Activity {
         setContentView(R.layout.play);
 
         Bundle b = getIntent().getExtras();
-        int challegeId = b.getInt("challengeId");
-        int puzzleId = b.getInt("puzzleId");
+        challegeId = b.getInt("challengeId");
+        puzzleId = b.getInt("puzzleId");
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -46,6 +47,7 @@ public class PlayActivity extends Activity {
         board.setActivity(this);
 
         board.setLevel(Global.getInstance().mChallenge.get(challegeId).mPuzzle.get(puzzleId));
+
         board.setTextFields((TextView) findViewById(R.id.flowsConnected),
                 (TextView) findViewById(R.id.movesMade),
                 (TextView) findViewById(R.id.bestMoves));
@@ -94,6 +96,30 @@ public class PlayActivity extends Activity {
 
     public void startDialog() {
         Intent intent = new Intent(getApplicationContext(), DialogActivity.class);
-        startActivity(intent);
+        Bundle b = new Bundle();
+        b.putInt("challengeId",challegeId);
+        b.putInt("puzzleId", puzzleId);
+        intent.putExtras(b);
+        startActivityForResult(intent, 1);
+
+
+
+        //finish();
+
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK){
+               int newChallenge = data.getIntExtra("challengeId",0);
+               int newPuzzle = data.getIntExtra("puzzleId",0);
+
+                board.setLevel(Global.getInstance().mChallenge.get(newChallenge).mPuzzle.get(newPuzzle));
+            }
+            if (resultCode == RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
     }
 }
