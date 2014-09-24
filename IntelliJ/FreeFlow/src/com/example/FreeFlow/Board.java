@@ -61,6 +61,7 @@ public class Board extends View {
     private boolean firstPath = true;
     private boolean firstPathRed = false;
     private int m_drawPath;
+    private boolean mayCut = true;
 
     private boolean GlobalVibrate = true, GlobalSound = true, vibsound = false, vibsoundcut = false;
 
@@ -104,7 +105,6 @@ public class Board extends View {
         mpblop = MediaPlayer.create(context, R.raw.blop);
         mpsword = MediaPlayer.create(context, R.raw.sword_strike);
 
-        //bla
 
     }
 
@@ -247,8 +247,26 @@ public class Board extends View {
 
         else if ( event.getAction() == MotionEvent.ACTION_MOVE ) {
             Coordinate currentcoord = new Coordinate(c, r);
+            mayCut = checkIfYouMayCutConcerningTheNeighourCoordinatesAndSomeCircles(currentcoord, c, r);
+
+
+            //Path on Circle
+            for (Circle[] cir : mCircles) {
+                if (mCircles.indexOf(cir) != m_drawPath) {
+                    if (cir[0].position.equals(currentcoord) || cir[1].position.equals(currentcoord)) {
+                        onDrawCircle = false;
+                        mayCut = false;
+                        break;
+                    }
+                    onDrawCircle = true;
+                }
+            }
+
+
+
 
             //Cutting path
+            if(mayCut) {
                 if (!mCellPath.get(m_drawPath).isConnected) {
                     for (Cellpath aM_cellPath : mCellPath) {
                         if (!aM_cellPath.equals(mCellPath.get(m_drawPath))) {
@@ -260,18 +278,7 @@ public class Board extends View {
                         }
                     }
                 }
-
-            //Path on Circle
-                for (Circle[] cir : mCircles) {
-                    if (mCircles.indexOf(cir) != m_drawPath) {
-                        if (cir[0].position.equals(currentcoord) || cir[1].position.equals(currentcoord)) {
-                            onDrawCircle = false;
-                            break;
-                        }
-                        onDrawCircle = true;
-                    }
-                }
-
+            }
 
                 //Path on own Circle or on free space
                 if (onDrawCircle) {
@@ -285,11 +292,14 @@ public class Board extends View {
 
                                 vibsound = false;
                             }
+
                         }
                     } else {
                         vibsound = true;
                     }
                 }
+            invalidate();
+
             }
         else if (event.getAction() == MotionEvent.ACTION_UP){
 
@@ -331,7 +341,6 @@ public class Board extends View {
             vibsound = vibsoundcut = false;
 
             if(pathsConnected == mCellPath.size()){
-                //TODO: dialog
                 editDB(mPuzzle.mPackId, Integer.parseInt(mPuzzle.mChallengeId),
                         Integer.parseInt(mPuzzle.mId),moves);
             }
@@ -420,8 +429,7 @@ public class Board extends View {
 
        if(GlobalVibrate)
             v.vibrate(50);
-      // if(GlobalSound)
-      //      mpblop.start();
+
         invalidate();
 
 
@@ -509,6 +517,25 @@ public class Board extends View {
 
     }
 
+
+    public boolean checkIfYouMayCutConcerningTheNeighourCoordinatesAndSomeCircles(Coordinate currentcoord, int c, int r){
+        //Current coords neighbours for cutting
+        try {
+             return areNeighbours(mCellPath.
+                    get(m_drawPath).getCoordinates()
+                    .get(mCellPath.get(m_drawPath).m_coords.size() - 1)
+                    .getRow(), mCellPath.get(m_drawPath)
+                    .getCoordinates()
+                    .get(mCellPath.get(m_drawPath).m_coords.size() - 1).getCol(), c, r)
+                    ||
+                    mCellPath.get(m_drawPath).getCoordinates()
+                            .get(mCellPath.get(m_drawPath).m_coords.size() - 1).equals(currentcoord);
+        }
+        catch (IndexOutOfBoundsException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
 
 
 }

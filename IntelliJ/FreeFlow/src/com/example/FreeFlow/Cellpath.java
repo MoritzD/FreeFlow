@@ -33,7 +33,7 @@ public class Cellpath {
         m_paintPath.setAntiAlias( true );
     }
 
-    private ArrayList<Coordinate> m_coords = new ArrayList<Coordinate>();
+    protected ArrayList<Coordinate> m_coords = new ArrayList<Coordinate>();
 
     public void append( Coordinate co ) {
         int idx = m_coords.indexOf(  co );
