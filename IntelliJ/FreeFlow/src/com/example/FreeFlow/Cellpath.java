@@ -16,12 +16,14 @@ public class Cellpath {
     protected Path m_path = new Path();
     protected Coordinate m_start;
     protected Coordinate m_end;
+    protected boolean isConnected;
 
 
     public Cellpath(int color, Coordinate start, Coordinate end){
 
         m_start = start;
         m_end = end;
+        isConnected = false;
 
         m_paintPath.setStyle( Paint.Style.STROKE );
         m_paintPath.setColor(color);
@@ -92,6 +94,14 @@ public class Cellpath {
     }
 
     public boolean isConnected(){
-        return (m_coords.contains(m_start) && m_coords.contains(m_end));
+
+        if ((m_coords.contains(m_start) && m_coords.contains(m_end))) {
+            isConnected = true;
+            return true;
+        }
+        else {
+            isConnected = false;
+            return false;
+        }
     }
 }
