@@ -25,6 +25,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 public class PackList extends ListActivity {
 
     private Global mGlobals =  Global.getInstance();
+    String packfile;
 
 
 
@@ -49,7 +50,7 @@ public class PackList extends ListActivity {
         Pack clicked = (Pack) l.getItemAtPosition(position);
         b.putString("name", clicked.getName()); //Your name
         intent.putExtras(b); //Put your id to your next Intent
-
+        packfile = clicked.getmFile();
 
         try{
             List<Challenge> challenge = new ArrayList<Challenge>();
@@ -94,14 +95,14 @@ public class PackList extends ListActivity {
                                 String id = eNode.getAttribute("id");
                                 String size = eNode.getElementsByTagName("size").item(0).getFirstChild().getNodeValue();
                                 String flows = eNode.getElementsByTagName("flows").item(0).getFirstChild().getNodeValue();
-                                cList.add(new Puzzle(id, size, flows));
+                                cList.add(new Puzzle(id, size, flows, packfile, stringId));
                             }
                         }
 
                     }
 
 
-                    challenge.add(new Challenge(name, cId, cList));
+                    challenge.add(new Challenge(name, cId, packfile, cList));
 
                 }
 

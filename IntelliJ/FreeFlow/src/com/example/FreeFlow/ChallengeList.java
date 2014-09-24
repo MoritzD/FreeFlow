@@ -37,6 +37,7 @@ public class ChallengeList extends ListActivity {
 
         Challenge clicked = (Challenge) l.getItemAtPosition(position);
         b.putInt("id", clicked.mId); //Your id
+        b.putString("packfile", clicked.mPackfile);
         intent.putExtras(b); //Put your id to your next Intent
         startActivity(intent);
     }
