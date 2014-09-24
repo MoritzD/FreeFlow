@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -52,7 +53,7 @@ public class PuzzleGrid extends Activity {
 
                 Intent intent = new Intent(getApplicationContext(), PlayActivity.class);
                 Bundle b = new Bundle();
-                b.putInt("challegeId",challengeId);
+                b.putInt("challengeId",challengeId-1);
 
                 Puzzle clicked = (Puzzle) gridview.getItemAtPosition(position);
                 b.putInt("puzzleId", Integer.parseInt(clicked.getId())-1);

@@ -4,7 +4,12 @@
           android:versionCode="1"
           android:versionName="1.0">
     <uses-sdk android:minSdkVersion="16"/>
+<<<<<<< HEAD
     <application android:label="@string/app_name" android:icon="@drawable/image"
+=======
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <application android:label="@string/app_name" android:icon="@drawable/ic_launcher"
+>>>>>>> dc0a9495d73b7305705bcd79f2bcd62d9ec3629b
         android:allowBackup="true">
         <activity android:name="MainActivity"
                   android:label="@string/app_name">
@@ -22,6 +27,7 @@
         </activity>
         <activity android:name=".PackList">
         </activity>
+
 
 
     </application>
