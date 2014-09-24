@@ -36,6 +36,7 @@ public class SettingsActivity extends Activity {
         Vibration.setChecked(Vib);
         Sound.setChecked(Sou);
 
+
     }
 
     public void switchClicked(View view){
@@ -59,7 +60,6 @@ public class SettingsActivity extends Activity {
         Button button = (Button) view;
         int id = button.getId();
         if(id == R.id.deleteButton){
-            // TODO: Put code here to Delete Database.
             ScoreAdapter scoreAdapter = new ScoreAdapter(this);
             scoreAdapter.dropBD();
         }

@@ -32,7 +32,7 @@ public class Board extends View {
 
     //DB
     private ScoreAdapter scoreAdapter = new ScoreAdapter(getContext());
-    private SimpleCursorAdapter mSCA;
+    Cursor cursor;
     //
 
     private int NUM_CELLS = 3;
@@ -61,7 +61,6 @@ public class Board extends View {
     private boolean firstPath = true;
     private boolean firstPathRed = false;
     private int m_drawPath;
-    private boolean mayCut = true;
 
     private boolean GlobalVibrate = true, GlobalSound = true, vibsound = false, vibsoundcut = false;
 
@@ -267,7 +266,6 @@ public class Board extends View {
                     if (mCircles.indexOf(cir) != m_drawPath) {
                         if (cir[0].position.equals(currentcoord) || cir[1].position.equals(currentcoord)) {
                             onDrawCircle = false;
-                            mayCut = false;
                             break;
                         }
                         onDrawCircle = true;
@@ -342,7 +340,6 @@ public class Board extends View {
 
 
         //set Booleans
-        mayCut = true;
         onCircle = false;
         onPath = false;
 
@@ -428,24 +425,11 @@ public class Board extends View {
         invalidate();
 
 
-        //Load DB
-        Cursor cursor = scoreAdapter.queryScore(mPuzzle.mPackId,
-                Integer.parseInt(mPuzzle.mChallengeId), Integer.parseInt(mPuzzle.mId));
-        if(!cursor.equals(null)){
-            if (cursor.moveToFirst()){
-                do{
-                    highscore = cursor.getInt(cursor.getColumnIndex("best"));
-                    // do what ever you want here
-                }while(cursor.moveToNext());
-            }
-            cursor.close();
-        }
-        else highscore = 0;
         moves = 0;
-
         movesMade.setText("Moves: " + 0);
         flowsConnected.setText("Flows: " + pathsConnected + "/" + mCellPath.size());
-        best.setText("Best: " + highscore);
+
+        loadScoresFromDBAndSetHighscore();
 
 
 
@@ -504,6 +488,25 @@ public class Board extends View {
             flowsConnected.setText("Flows: " + pathsConnected + "/" + mCellPath.size());
             invalidate();
         }
+    }
+
+
+    public void loadScoresFromDBAndSetHighscore(){
+
+        //Load DB
+        cursor = scoreAdapter.queryScore(mPuzzle.mPackId,
+                Integer.parseInt(mPuzzle.mChallengeId), Integer.parseInt(mPuzzle.mId));
+        highscore = 0;
+        if (cursor.moveToFirst()){
+            do{
+                highscore = cursor.getInt(cursor.getColumnIndex("best"));
+                // do what ever you want here
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+        best.setText("Best: " + highscore);
+
+
     }
 
 

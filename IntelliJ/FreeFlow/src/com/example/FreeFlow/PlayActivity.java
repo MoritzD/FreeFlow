@@ -80,7 +80,7 @@ public class PlayActivity extends Activity {
 
         Boolean Vib = settings.getBoolean( "Vibrate", true );
         Boolean Sou =  settings.getBoolean( "Sound", true );
-
+        board.loadScoresFromDBAndSetHighscore();
         board.setVibrate(Vib);
         board.setSound(Sou);
     }
