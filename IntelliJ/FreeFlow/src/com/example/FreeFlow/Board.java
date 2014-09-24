@@ -7,14 +7,10 @@ package com.example.FreeFlow;
 import android.content.Context;
 import android.graphics.*;
 import android.media.MediaPlayer;
-import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -31,18 +27,26 @@ public class Board extends View {
 
     public Puzzle mPuzzle = null;
 
+    private int prevPath;
+
+    public int pathsConnected;
+    public int moves;
+
+    TextView flowsConnected;
+    TextView movesMade;
+    TextView best;
+
+    private boolean firstPath = true;
     private int m_drawPath;
 
-    private boolean vibrateconnedt=true,GlobalVibrate=true;
+    private boolean vibrateconnedt = true, GlobalVibrate = true;
 
-    //private Circle[][] m_circles;
     List<Circle[]> mCircles = new ArrayList<Circle[]>();
 
 
     private Rect m_rect = new Rect();
     private Paint m_paintGrid  = new Paint();
 
-    //private Cellpath[] m_cellPath;
     List<Cellpath> mCellPath = new ArrayList<Cellpath>();
     private boolean onCircle = false;
     private boolean onPath = false;
@@ -72,11 +76,8 @@ public class Board extends View {
         m_paintGrid.setStyle( Paint.Style.STROKE );
         m_paintGrid.setColor( Color.GRAY );
 
-        //onSizeChanged(this.getWidth(),this.getHeight(),this.getWidth(),this.getHeight());
-
         v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-        //mp = MediaPlayer.create(context, R.raw.sound1);
-        //bla
+
     }
 
 
@@ -99,28 +100,11 @@ public class Board extends View {
     @Override
     protected void onSizeChanged( int xNew, int yNew, int xOld, int yOld ) {
         int sw = Math.max(1, (int) m_paintGrid.getStrokeWidth());
-       /* if(mPuzzle!=null){
-            NUM_CELLS=Integer.parseInt(mPuzzle.getSize());
-        }*/
+
         m_cellWidth  = (xNew - getPaddingLeft() - getPaddingRight() - sw) / NUM_CELLS;
         m_cellHeight = (yNew - getPaddingTop() - getPaddingBottom() - sw) / NUM_CELLS;
 
-        /*Circle[][] m1_circles = {{new Circle(new Coordinate(0,0),Color.GREEN,m_cellWidth),new Circle(new Coordinate(1,4),Color.GREEN,m_cellWidth)},
-                {new Circle(new Coordinate(2,0),Color.RED,m_cellWidth),new Circle(new Coordinate(1,3),Color.RED,m_cellWidth)},
-                {new Circle(new Coordinate(4,0),Color.WHITE,m_cellWidth),new Circle(new Coordinate(3,3),Color.WHITE,m_cellWidth)},
-                {new Circle(new Coordinate(2,1),Color.YELLOW,m_cellWidth),new Circle(new Coordinate(2,4),Color.YELLOW,m_cellWidth)},
-                {new Circle(new Coordinate(4,1),Color.BLUE,m_cellWidth),new Circle(new Coordinate(3,4),Color.BLUE,m_cellWidth)}};
-
-        m_circles=m1_circles;
-        m_cellPath = new Cellpath[m_circles.length];
-
-        for(int i = 0; i< m_cellPath.length;i++ ){
-
-            m_cellPath[i] = new Cellpath(m_circles[i][0].m_color, m_circles[i][0].position, m_circles[i][1].position);
-        }*/
-        //loadLevel(Global.getInstance().mChallenge.get(0).mPuzzle.get(1));
         loadLevel();
-        //messured=true;
     }
 
     @Override
@@ -186,33 +170,17 @@ public class Board extends View {
 
         if ( event.getAction() == MotionEvent.ACTION_DOWN ) {
 
-            /*for (int i = 0; i < m_cellPath.length; i++){
-                if(m_cellPath[i].isTouched(new Coordinate(xToCol(x),yToRow(y)))){
-                    onPath=true;
-                    m_drawPath = i;
-                }
-            }*/
-
             for (Cellpath cell: mCellPath){
                 if(cell.isTouched(new Coordinate(xToCol(x),yToRow(y)))){
                     onPath=true;
                     m_drawPath = mCellPath.indexOf(cell);
+                    if(firstPath) {
+                        prevPath = m_drawPath;
+                        firstPath = false;
+                    }
                 }
             }
 
-
-
-           /* for( int i = 0; i < m_circles.length; i++){
-                for( int e = 0; e <= 1; e++){
-                    if (m_circles[i][e].isTouched(colToX(c), rowToY(r))) {
-                        m_drawPath = i;
-                        onCircle = true;
-                        found = true;
-                        break;
-                    }
-                }
-                if (found) break;
-            }*/
             for( Circle[] cir : mCircles){
                 for( int e = 0; e <= 1; e++){
                     if (cir[e].isTouched(colToX(c), rowToY(r))) {
@@ -225,13 +193,6 @@ public class Board extends View {
                 if (found) break;
             }
 
-            /*if(onCircle){
-                m_cellPath[m_drawPath].reset();
-                m_cellPath[m_drawPath].append( new Coordinate(c,r) );
-            }
-            else if(onPath){
-                m_cellPath[m_drawPath].append( new Coordinate(c,r) );
-            }*/
             if(onCircle){
                 mCellPath.get(m_drawPath).reset();
                 mCellPath.get(m_drawPath).append( new Coordinate(c,r) );
@@ -256,16 +217,7 @@ public class Board extends View {
 
             Coordinate currentcoord = new Coordinate(c, r);
 
-            /*for(int i = 0; i < m_circles.length; i++){
-                if(i!=m_drawPath){
-                    if(m_circles[i][0].position.equals(currentcoord) || m_circles[i][1].position.equals(currentcoord) ){
-                        onDrawCircle = false;
-                        break;
-                    }
-                onDrawCircle = true;
 
-                }
-            }*/
             for(Circle[] cir : mCircles){
                 if(mCircles.indexOf(cir)!=m_drawPath){
                     if(cir[0].position.equals(currentcoord) || cir[1].position.equals(currentcoord) ){
@@ -278,20 +230,6 @@ public class Board extends View {
             }
 
 
-
-            /*if(onDrawCircle) {
-                if (!m_cellPath[m_drawPath].isConnected()) {
-                    if (!m_cellPath[m_drawPath].isEmpty()) {
-                        List<Coordinate> coordinateList = m_cellPath[m_drawPath].getCoordinates();
-                        Coordinate last = coordinateList.get(coordinateList.size() - 1);
-                        if (areNeighbours(last.getCol(), last.getRow(), c, r)) {
-                            m_cellPath[m_drawPath].append(new Coordinate(c, r));
-                            invalidate();
-
-                        }
-                    }
-                }
-            }*/
             if(onDrawCircle) {
                 if (!mCellPath.get(m_drawPath).isConnected()) {
                     if (!mCellPath.get(m_drawPath).isEmpty()) {
@@ -315,6 +253,24 @@ public class Board extends View {
             }
         }
         else if (event.getAction() == MotionEvent.ACTION_UP){
+
+            pathsConnected = 0;
+            for (Cellpath aMCellPath : mCellPath) {
+                aMCellPath.isConnected();
+                if (aMCellPath.isConnected) {
+                    pathsConnected = pathsConnected + 1;
+                }
+            }
+
+            if(prevPath != m_drawPath){
+                moves = moves + 1;
+                prevPath = m_drawPath;
+            }
+
+            movesMade.setText("Moves: "+ moves);
+            flowsConnected.setText("Flows: " + pathsConnected + "/" + mCellPath.size());
+
+
             onCircle = false;
             onPath = false;
 
@@ -323,13 +279,8 @@ public class Board extends View {
     }
     public void loadLevel(){
         if(mPuzzle==null) return;
-        int pathsConnected = 0;
 
-        for (Cellpath aMCellPath : mCellPath) {
-            if (aMCellPath.isConnected()) {
-                pathsConnected = pathsConnected + 1;
-            }
-        }
+        pathsConnected = 0;
 
         int red=1,green=0,blue=0;
          String[] points=mPuzzle.getFlows().split(",");
@@ -391,6 +342,11 @@ public class Board extends View {
             mCellPath.add( new Cellpath(cir[0].m_color, cir[0].position, cir[1].position));
         }
 
+
+        movesMade.setText("Moves: " + 0);
+        flowsConnected.setText("Flows: " + pathsConnected + "/" + mCellPath.size());
+        best.setText("Best: " + 0);
+
        if(GlobalVibrate)
             v.vibrate(50);
         invalidate();
@@ -399,9 +355,17 @@ public class Board extends View {
         mPuzzle=puz;
         if(mPuzzle!=null)
             NUM_CELLS = Integer.parseInt(mPuzzle.getSize());
-        //Log.d("Size:",mPuzzle.getSize());
-        //onSizeChanged(this.getWidth(),this.getHeight(),this.getWidth(),this.getHeight());
         invalidate();
+    }
+
+
+    public void setTextFields(TextView flows, TextView moves, TextView bestMoves){
+
+        flowsConnected = flows;
+        movesMade = moves;
+        best = bestMoves;
+
+
     }
 
 
