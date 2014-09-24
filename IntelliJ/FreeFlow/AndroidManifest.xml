@@ -5,10 +5,13 @@
           android:versionName="1.0">
     <uses-sdk android:minSdkVersion="16"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
-    <application
-        android:label="@string/app_name"
-        android:icon="@drawable/image"
-        android:allowBackup="true">
+    <application android:label="@string/app_name"
+                 android:icon="@drawable/image"
+                 android:allowBackup="true"
+            >
+
+
+
         <activity android:name="MainActivity"
                   android:label="@string/app_name">
             <intent-filter>
@@ -25,5 +28,8 @@
         </activity>
         <activity android:name=".PackList">
         </activity>
+        <activity android:name=".SettingsActivity"/>
+
+
     </application>
 </manifest>

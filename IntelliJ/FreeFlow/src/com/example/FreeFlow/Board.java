@@ -7,10 +7,14 @@ package com.example.FreeFlow;
 import android.content.Context;
 import android.graphics.*;
 import android.media.MediaPlayer;
+import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -39,7 +43,7 @@ public class Board extends View {
     private boolean firstPath = true;
     private int m_drawPath;
 
-    private boolean vibrateconnedt = true, GlobalVibrate = true;
+    private boolean vibrateconnedt = true, GlobalVibrate = true, GlobalSound = true, vibsound = false, vibsoundcut = false;
 
     List<Circle[]> mCircles = new ArrayList<Circle[]>();
 
@@ -52,7 +56,8 @@ public class Board extends View {
     private boolean onPath = false;
     private boolean onDrawCircle = false;
     private Vibrator v;
-    public MediaPlayer mp;
+    public MediaPlayer mpblop,mpsword;
+
 
     private int xToCol( int x ) {
         return (x - getPaddingLeft()) / m_cellWidth;
@@ -77,6 +82,10 @@ public class Board extends View {
         m_paintGrid.setColor( Color.GRAY );
 
         v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        mpblop = MediaPlayer.create(context, R.raw.blop);
+        mpsword = MediaPlayer.create(context, R.raw.sword_strike);
+
+        //bla
 
     }
 
@@ -209,8 +218,8 @@ public class Board extends View {
                 if(!aM_cellPath.equals(mCellPath.get(m_drawPath))){
                     if(aM_cellPath.contains(new Coordinate(xToCol(x), yToRow(y)))){
                         aM_cellPath.cutPath(new Coordinate(xToCol(x), yToRow(y)));
-                        if(GlobalVibrate)
-                            v.vibrate(50);
+                        vibsoundcut=true;
+
                     }
                 }
             }
@@ -240,15 +249,16 @@ public class Board extends View {
                             invalidate();
                             vibrateconnedt=true;
 
+                            vibsound=false;
+
                         }
                     }
                 }
                 else{
-                    if(vibrateconnedt){
-                        if(GlobalVibrate)
-                            v.vibrate(50);
-                        vibrateconnedt=false;
-                    }
+
+                       vibsound=true;
+
+
                 }
             }
         }
@@ -273,12 +283,30 @@ public class Board extends View {
 
             onCircle = false;
             onPath = false;
+            if(vibsound) {
+                if (GlobalVibrate)
+                    v.vibrate(50);
+                if (GlobalSound) {
+                    mpblop.seekTo(0);
+                    mpblop.start();
+                }
+            }
+           else if(vibsoundcut){
+                if (GlobalVibrate)
+                    v.vibrate(50);
+                if (GlobalSound) {
+                    mpsword.seekTo(0);
+                    mpsword.start();
+                }
+            }
+            vibsound = vibsoundcut = false;
 
         }
         return true;
     }
     public void loadLevel(){
         if(mPuzzle==null) return;
+        int pathsConnected = 0;
 
         pathsConnected = 0;
 
@@ -349,6 +377,8 @@ public class Board extends View {
 
        if(GlobalVibrate)
             v.vibrate(50);
+       if(GlobalSound)
+            mpblop.start();
         invalidate();
     }
     public void setLevel(Puzzle puz){
