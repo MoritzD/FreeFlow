@@ -7,20 +7,19 @@ import java.util.List;
  */
 public class Global {
 
+    private static Global mInstance = new Global();
     public List<Pack> mPacks;
     public List<Challenge> mChallenge;
     public DBHelper dbHelper;
 
-    private static Global mInstance = new Global();
+    private Global() {
+
+
+    }
 
     public static Global getInstance() {
 
         return mInstance;
-    }
-
-    private Global(){
-
-
     }
 
 }

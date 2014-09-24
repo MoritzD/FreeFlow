@@ -8,7 +8,7 @@ public class Coordinate {
     protected int m_col;
     protected int m_row;
 
-    Coordinate( int col, int row ) {
+    Coordinate(int col, int row) {
         m_col = col;
         m_row = row;
     }
@@ -32,11 +32,11 @@ public class Coordinate {
     }
 
     @Override
-    public boolean equals( Object other ) {
-        if ( !(other instanceof Coordinate) ) {
+    public boolean equals(Object other) {
+        if (!(other instanceof Coordinate)) {
             return false;
         }
         Coordinate otherCo = (Coordinate) other;
-        return otherCo.getCol() == this.getCol()&& otherCo.getRow() == this.getRow();
+        return otherCo.getCol() == this.getCol() && otherCo.getRow() == this.getRow();
     }
 }

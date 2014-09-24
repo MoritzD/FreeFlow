@@ -11,7 +11,7 @@ public class Puzzle {
     String mPackId;
     String mChallengeId;
 
-    public Puzzle (String id, String size, String flows, String packId, String challengeId){
+    public Puzzle(String id, String size, String flows, String packId, String challengeId) {
 
         mId = id;
         mSize = size;
@@ -21,18 +21,18 @@ public class Puzzle {
 
     }
 
-    public String getId(){
+    public String getId() {
 
         return mId;
 
     }
 
-    public String getSize(){
+    public String getSize() {
 
         return mSize;
     }
 
-    public String getFlows(){
+    public String getFlows() {
 
         return mFlows;
     }

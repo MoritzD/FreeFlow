@@ -14,11 +14,11 @@ import java.util.List;
  */
 public class ChallengeAdapter extends ArrayAdapter<Challenge> {
 
-    private List<Challenge> list;
     Context context;
+    private List<Challenge> list;
 
 
-    public ChallengeAdapter(Context context, int resource, List<Challenge> objects){
+    public ChallengeAdapter(Context context, int resource, List<Challenge> objects) {
         super(context, resource, objects);
         this.context = context;
         this.list = objects;
@@ -50,10 +50,6 @@ public class ChallengeAdapter extends ArrayAdapter<Challenge> {
     private static class ViewHolder {
         TextView name;
     }
-
-
-
-
 
 
 }

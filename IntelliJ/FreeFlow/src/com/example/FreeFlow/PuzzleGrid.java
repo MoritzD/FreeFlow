@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -32,8 +31,8 @@ public class PuzzleGrid extends Activity {
         Bundle b = getIntent().getExtras();
         final int cId = b.getInt("id");
         challengeId = cId;
-        for(int i = 0; i < mGlobal.mChallenge.size(); i++){
-            if(mGlobal.mChallenge.get(i).mId == cId){
+        for (int i = 0; i < mGlobal.mChallenge.size(); i++) {
+            if (mGlobal.mChallenge.get(i).mId == cId) {
                 mChallenge = mGlobal.mChallenge.get(i);
             }
         }
@@ -44,12 +43,10 @@ public class PuzzleGrid extends Activity {
         final GridView gridview = (GridView) findViewById(R.id.gridview);
 
 
-
         PuzzleAdapter adapter = new PuzzleAdapter(mContext,
                 R.layout.grid_puzzle_square, mChallenge.mPuzzle);
 
         gridview.setAdapter(adapter);
-
 
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -57,10 +54,10 @@ public class PuzzleGrid extends Activity {
 
                 Intent intent = new Intent(getApplicationContext(), PlayActivity.class);
                 Bundle b = new Bundle();
-                b.putInt("challengeId",challengeId-1);
+                b.putInt("challengeId", challengeId - 1);
 
                 Puzzle clicked = (Puzzle) gridview.getItemAtPosition(position);
-                b.putInt("puzzleId", Integer.parseInt(clicked.getId())-1);
+                b.putInt("puzzleId", Integer.parseInt(clicked.getId()) - 1);
                 intent.putExtras(b);
                 startActivity(intent);
 
@@ -70,21 +67,21 @@ public class PuzzleGrid extends Activity {
 
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        switch(item.getItemId()) {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             case R.id.action_settings:
                 startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
                 break;
             default:
-                  onBackPressed();
+                onBackPressed();
         }
         return true;
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
+    public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.actionbar,menu);
+        inflater.inflate(R.menu.actionbar, menu);
         return super.onCreateOptionsMenu(menu);
     }
 

@@ -24,13 +24,11 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 public class PackList extends ListActivity {
 
-    private Global mGlobals =  Global.getInstance();
     String packfile;
-
-
+    private Global mGlobals = Global.getInstance();
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         PackAdapter adapter = new PackAdapter(this, R.layout.list_pack, mGlobals.mPacks);
@@ -43,7 +41,7 @@ public class PackList extends ListActivity {
 
 
     @Override
-    protected void onListItemClick(ListView l, View v, int position, long id){
+    protected void onListItemClick(ListView l, View v, int position, long id) {
 
         Intent intent = new Intent(getApplicationContext(), ChallengeList.class);
         Bundle b = new Bundle();
@@ -53,12 +51,11 @@ public class PackList extends ListActivity {
         intent.putExtras(b); //Put your id to your next Intent
         packfile = clicked.getmFile();
 
-        try{
+        try {
             List<Challenge> challenge = new ArrayList<Challenge>();
             readChallenge(getAssets().open(clicked.getmFile()), challenge);
             mGlobals.mChallenge = challenge;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -66,7 +63,7 @@ public class PackList extends ListActivity {
         startActivity(intent);
     }
 
-    private void readChallenge( InputStream is, List<Challenge> challenge){
+    private void readChallenge(InputStream is, List<Challenge> challenge) {
 
 
         try {
@@ -75,11 +72,11 @@ public class PackList extends ListActivity {
             Document doc = dbBuilder.parse(is);
             NodeList nList = doc.getElementsByTagName("challenge");
 
-            for( int c = 0; c < nList.getLength(); ++c){
+            for (int c = 0; c < nList.getLength(); ++c) {
                 List<Puzzle> cList = new ArrayList<Puzzle>();
                 Node nNode = nList.item(c);
 
-                if( nNode.getNodeType() == Node.ELEMENT_NODE) {
+                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element oNode = (Element) nNode;
                     String name = oNode.getAttribute("name");
                     String stringId = oNode.getAttribute("id");
@@ -87,10 +84,10 @@ public class PackList extends ListActivity {
 
                     NodeList nListInner = doc.getElementsByTagName("puzzle");
 
-                    for(int in = 0; in < nListInner.getLength(); ++in) {
+                    for (int in = 0; in < nListInner.getLength(); ++in) {
                         Node innerNode = nListInner.item(in);
 
-                        if(innerNode.getParentNode().equals(nNode)) {
+                        if (innerNode.getParentNode().equals(nNode)) {
                             if (innerNode.getNodeType() == Node.ELEMENT_NODE) {
                                 Element eNode = (Element) innerNode;
                                 String id = eNode.getAttribute("id");
@@ -109,28 +106,27 @@ public class PackList extends ListActivity {
 
             }
 
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        switch(item.getItemId()) {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             case R.id.action_settings:
                 startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
                 break;
             default:
-                  onBackPressed();
+                onBackPressed();
         }
         return true;
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
+    public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.actionbar,menu);
+        inflater.inflate(R.menu.actionbar, menu);
         return super.onCreateOptionsMenu(menu);
     }
 

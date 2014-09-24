@@ -14,8 +14,8 @@ import java.util.List;
  */
 public class PuzzleAdapter extends ArrayAdapter<Puzzle> {
 
-    private List<Puzzle> list;
     Context context;
+    private List<Puzzle> list;
 
     public PuzzleAdapter(Context context, int resource, List<Puzzle> puzzles) {
         super(context, resource, puzzles);

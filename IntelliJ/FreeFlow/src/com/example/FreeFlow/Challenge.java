@@ -8,13 +8,12 @@ import java.util.List;
  */
 public class Challenge {
 
-    List<Puzzle> mPuzzle = new ArrayList<Puzzle>();
-
     public String mName;
     public int mId;
     protected String mPackfile;
+    List<Puzzle> mPuzzle = new ArrayList<Puzzle>();
 
-    public Challenge (String name, int id, String packfile, List<Puzzle> puzzles){
+    public Challenge(String name, int id, String packfile, List<Puzzle> puzzles) {
 
         mName = name;
         mPuzzle = puzzles;

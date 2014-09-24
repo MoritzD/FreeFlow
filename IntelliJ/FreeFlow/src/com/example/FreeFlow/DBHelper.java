@@ -13,7 +13,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final int DB_VERSION = 1;
 
     public static final String TableScore = "score";
-    public static final String[] TableScoreCols = { "_id", "pack", "challengeid", "levelid", "best" };
+    public static final String[] TableScoreCols = {"_id", "pack", "challengeid", "levelid", "best"};
 
     public static final String sqlDropTableScore =
             "DROP TABLE IF EXISTS score;";
@@ -32,19 +32,19 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public void dropDatabase(SQLiteDatabase db){
-        db.execSQL( sqlDropTableScore );
-        onCreate( db );
+    public void dropDatabase(SQLiteDatabase db) {
+        db.execSQL(sqlDropTableScore);
+        onCreate(db);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL( sqlCreateTableScore );
+        db.execSQL(sqlCreateTableScore);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL( sqlDropTableScore );
-        onCreate( db );
+        db.execSQL(sqlDropTableScore);
+        onCreate(db);
     }
 }

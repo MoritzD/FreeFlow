@@ -3,15 +3,11 @@ package com.example.FreeFlow;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.media.Image;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -55,10 +51,10 @@ public class PlayActivity extends Activity {
 
         board = (Board) findViewById(R.id.board);
 
-        SharedPreferences settings = getSharedPreferences( "SoundVibration", MODE_PRIVATE );
+        SharedPreferences settings = getSharedPreferences("SoundVibration", MODE_PRIVATE);
 
-        Boolean Vib = settings.getBoolean( "Vibrate", true );
-        Boolean Sou =  settings.getBoolean( "Sound", true );
+        Boolean Vib = settings.getBoolean("Vibrate", true);
+        Boolean Sou = settings.getBoolean("Sound", true);
 
         board.setVibrate(Vib);
         board.setSound(Sou);
@@ -76,41 +72,39 @@ public class PlayActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        SharedPreferences settings = getSharedPreferences( "SoundVibration", MODE_PRIVATE );
+        SharedPreferences settings = getSharedPreferences("SoundVibration", MODE_PRIVATE);
 
-        Boolean Vib = settings.getBoolean( "Vibrate", true );
-        Boolean Sou =  settings.getBoolean( "Sound", true );
+        Boolean Vib = settings.getBoolean("Vibrate", true);
+        Boolean Sou = settings.getBoolean("Sound", true);
         board.loadScoresFromDBAndSetHighscore();
         board.setVibrate(Vib);
         board.setSound(Sou);
     }
 
 
-
-
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        switch(item.getItemId()) {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             case R.id.action_settings:
                 startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
                 break;
             default:
-                  onBackPressed();
+                onBackPressed();
         }
         return true;
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
+    public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.actionbar,menu);
+        inflater.inflate(R.menu.actionbar, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     public void startDialog() {
         Intent intent = new Intent(getApplicationContext(), DialogActivity.class);
         Bundle b = new Bundle();
-        b.putInt("challengeId",challengeId);
+        b.putInt("challengeId", challengeId);
         b.putInt("puzzleId", puzzleId);
         intent.putExtras(b);
         startActivityForResult(intent, 1);
@@ -122,17 +116,17 @@ public class PlayActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == 1) {
-            if(resultCode == RESULT_OK){
+            if (resultCode == RESULT_OK) {
                 //int newChalenge = data.getIntExtra("challengeId",0);
-                int newPuzzleId = data.getIntExtra("puzzleId",0);
+                int newPuzzleId = data.getIntExtra("puzzleId", 0);
 
                 //if(newPuzzleId != puzzleId) {
-                    board.setLevel(Global.getInstance().mChallenge.get(challengeId).mPuzzle.get(newPuzzleId));
-                    board.loadLevel();
-                    puzzleId = newPuzzleId;
+                board.setLevel(Global.getInstance().mChallenge.get(challengeId).mPuzzle.get(newPuzzleId));
+                board.loadLevel();
+                puzzleId = newPuzzleId;
                 //}
                 //else{
-                 //   board.resetBoard();
+                //   board.resetBoard();
                 //}
             }
             if (resultCode == RESULT_CANCELED) {
@@ -145,14 +139,13 @@ public class PlayActivity extends Activity {
 
         @Override
         public void onClick(View view) {
-            switch(view.getId()){
+            switch (view.getId()) {
                 case R.id.btn_prev:
-                    if(puzzleId-1>=0) {
+                    if (puzzleId - 1 >= 0) {
                         board.setLevel(Global.getInstance().mChallenge.get(challengeId).mPuzzle.get(puzzleId - 1));
                         board.loadLevel();
                         puzzleId = puzzleId - 1;
-                    }
-                    else{
+                    } else {
 
                     }
                     break;
@@ -160,12 +153,11 @@ public class PlayActivity extends Activity {
                     board.resetBoard();
                     break;
                 case R.id.btn_next_p:
-                    if(puzzleId+1<Global.getInstance().mChallenge.get(challengeId).mPuzzle.size()) {
+                    if (puzzleId + 1 < Global.getInstance().mChallenge.get(challengeId).mPuzzle.size()) {
                         board.setLevel(Global.getInstance().mChallenge.get(challengeId).mPuzzle.get(puzzleId + 1));
                         board.loadLevel();
                         puzzleId = puzzleId + 1;
-                    }
-                    else{
+                    } else {
                         //bam
                     }
                     break;

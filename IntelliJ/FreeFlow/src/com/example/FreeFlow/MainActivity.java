@@ -24,8 +24,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 public class MainActivity extends Activity {
 
-    private Global mGlobals =  Global.getInstance();
-
+    private Global mGlobals = Global.getInstance();
 
 
     /**
@@ -36,33 +35,33 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        try{
+        try {
             List<Pack> packs = new ArrayList<Pack>();
             readPack(getAssets().open("packs/packs.xml"), packs);
             mGlobals.mPacks = packs;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
 
     }
-    public void buttonClick (View view) {
+
+    public void buttonClick(View view) {
         Button button = (Button) view;
         int id = button.getId();
         if (id == R.id.buttonPlay) {
             startActivity(new Intent(getApplicationContext(), PackList.class));
         }
-        if(id == R.id.buttonSettings){
+        if (id == R.id.buttonSettings) {
             startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
         }
-        if(id == R.id.buttonAbout){
+        if (id == R.id.buttonAbout) {
             Intent intent = new Intent(getApplicationContext(), AboutActivity.class);
             startActivity(intent);
         }
     }
 
-    private void readPack( InputStream is, List<Pack> packs){
+    private void readPack(InputStream is, List<Pack> packs) {
 
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -70,10 +69,10 @@ public class MainActivity extends Activity {
             Document doc = dbBuilder.parse(is);
             NodeList nList = doc.getElementsByTagName("pack");
 
-            for( int c = 0; c < nList.getLength(); ++c){
+            for (int c = 0; c < nList.getLength(); ++c) {
 
                 Node nNode = nList.item(c);
-                if( nNode.getNodeType() == Node.ELEMENT_NODE) {
+                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 
                     Element eNode = (Element) nNode;
                     String name = eNode.getElementsByTagName("name").item(0).getFirstChild().getNodeValue();
@@ -85,28 +84,27 @@ public class MainActivity extends Activity {
                 }
             }
 
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        switch(item.getItemId()) {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             case R.id.action_settings:
                 startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
                 break;
             default:
-              //  onBackPressed();
+                //  onBackPressed();
         }
         return true;
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
+    public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.actionbar,menu);
+        inflater.inflate(R.menu.actionbar, menu);
         return super.onCreateOptionsMenu(menu);
     }
 

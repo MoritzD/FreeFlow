@@ -11,8 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 
 /**
@@ -20,11 +18,11 @@ import java.util.List;
  */
 public class PackAdapter extends ArrayAdapter<Pack> {
 
-    private List<Pack> list;
     Context context;
+    private List<Pack> list;
 
 
-    public PackAdapter(Context context, int resource, List<Pack> objects){
+    public PackAdapter(Context context, int resource, List<Pack> objects) {
 
         super(context, resource, objects);
         this.context = context;
@@ -63,10 +61,6 @@ public class PackAdapter extends ArrayAdapter<Pack> {
         TextView name;
         TextView description;
     }
-
-
-
-
 
 
 }

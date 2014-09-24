@@ -12,37 +12,34 @@ import java.util.List;
  */
 
 public class Cellpath {
-    protected Paint m_paintPath  = new Paint();
+    protected Paint m_paintPath = new Paint();
     protected Path m_path = new Path();
     protected Coordinate m_start;
     protected Coordinate m_end;
     protected boolean isConnected;
+    protected ArrayList<Coordinate> m_coords = new ArrayList<Coordinate>();
 
-
-    public Cellpath(int color, Coordinate start, Coordinate end){
+    public Cellpath(int color, Coordinate start, Coordinate end) {
 
         m_start = start;
         m_end = end;
         isConnected = false;
 
-        m_paintPath.setStyle( Paint.Style.STROKE );
+        m_paintPath.setStyle(Paint.Style.STROKE);
         m_paintPath.setColor(color);
         m_paintPath.setStrokeWidth(50);
-        m_paintPath.setStrokeCap( Paint.Cap.ROUND );
-        m_paintPath.setStrokeJoin( Paint.Join.ROUND );
-        m_paintPath.setAntiAlias( true );
+        m_paintPath.setStrokeCap(Paint.Cap.ROUND);
+        m_paintPath.setStrokeJoin(Paint.Join.ROUND);
+        m_paintPath.setAntiAlias(true);
     }
 
-    protected ArrayList<Coordinate> m_coords = new ArrayList<Coordinate>();
-
-    public void append( Coordinate co ) {
-        int idx = m_coords.indexOf(  co );
-        if ( idx >= 0 ) {
-            for ( int i=m_coords.size()-1; i > idx; --i ) {
+    public void append(Coordinate co) {
+        int idx = m_coords.indexOf(co);
+        if (idx >= 0) {
+            for (int i = m_coords.size() - 1; i > idx; --i) {
                 m_coords.remove(i);
             }
-        }
-        else {
+        } else {
             m_coords.add(co);
         }
     }
@@ -73,16 +70,16 @@ public class Cellpath {
 
     public void cutPath(Coordinate t_co) {
 
-        int idx = m_coords.indexOf(  t_co );
-        if ( idx >= 1 ) {
-            for ( int i = m_coords.size()-1; i > idx-1; --i ) {
+        int idx = m_coords.indexOf(t_co);
+        if (idx >= 1) {
+            for (int i = m_coords.size() - 1; i > idx - 1; --i) {
                 m_coords.remove(i);
                 Log.d("Cellpath", "The Path is cut!");
             }
         }
     }
 
-    public boolean contains(Coordinate con_co){
+    public boolean contains(Coordinate con_co) {
 
         for (Coordinate e_co : m_coords) {
             if (e_co.equals(con_co)) {
@@ -93,13 +90,12 @@ public class Cellpath {
 
     }
 
-    public boolean isConnected(){
+    public boolean isConnected() {
 
         if ((m_coords.contains(m_start) && m_coords.contains(m_end))) {
             isConnected = true;
             return true;
-        }
-        else {
+        } else {
             isConnected = false;
             return false;
         }

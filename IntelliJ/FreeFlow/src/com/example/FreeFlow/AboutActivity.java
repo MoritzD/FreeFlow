@@ -16,12 +16,13 @@ public class AboutActivity extends Activity {
         getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    public void ButtonClicked(View view){
+    public void ButtonClicked(View view) {
         finish();
     }
+
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        switch(item.getItemId()) {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             case R.id.action_settings:
 
                 break;

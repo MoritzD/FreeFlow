@@ -26,22 +26,22 @@ public class DialogActivity extends Activity {
         setContentView(R.layout.activity_dialog);
 
     }
-    public void buttonClickDialog(View view){
+
+    public void buttonClickDialog(View view) {
         Button button = (Button) view;
         int id = button.getId();
-        Intent intent,resultIntent;
+        Intent intent, resultIntent;
         Bundle b;
-        switch (id){
+        switch (id) {
             case R.id.btn_pref:
 
                 resultIntent = new Intent();
-               // resultIntent.putExtra("challengeId", challegeId);
-                if(puzzleId-1>=0) {
+                // resultIntent.putExtra("challengeId", challegeId);
+                if (puzzleId - 1 >= 0) {
                     resultIntent.putExtra("puzzleId", puzzleId - 1);
                     setResult(Activity.RESULT_OK, resultIntent);
                     finish();
-                }
-                else{
+                } else {
 
                 }
 
@@ -50,7 +50,7 @@ public class DialogActivity extends Activity {
 
                 resultIntent = new Intent();
                 //resultIntent.putExtra("challengeId", challegeId);
-                resultIntent.putExtra("puzzleId",puzzleId);
+                resultIntent.putExtra("puzzleId", puzzleId);
                 setResult(Activity.RESULT_OK, resultIntent);
                 finish();
 
@@ -59,12 +59,11 @@ public class DialogActivity extends Activity {
 
                 resultIntent = new Intent();
                 //resultIntent.putExtra("challengeId", challegeId);
-                if(puzzleId+1<Global.getInstance().mChallenge.get(challegeId).mPuzzle.size()) {
+                if (puzzleId + 1 < Global.getInstance().mChallenge.get(challegeId).mPuzzle.size()) {
                     resultIntent.putExtra("puzzleId", puzzleId + 1);
                     setResult(Activity.RESULT_OK, resultIntent);
                     finish();
-                }
-                else{
+                } else {
 
                 }
                 break;
