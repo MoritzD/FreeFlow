@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:gravity="center"
+        >
+
+    <TextView
+
+            android:paddingTop="100dp"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/About"
+            android:gravity="center_horizontal"
+            android:textSize="20dp"
+
+            android:paddingBottom="12dip"
+            />
+
+
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:orientation="vertical"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:gravity="bottom"
+            >
+        <Button
+                android:id="@+id/buttonexit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Leave"
+                android:onClick="ButtonClicked"
+
+                android:layout_gravity="center_horizontal"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="40dp"
+                android:paddingRight="40dp"
+
+                />
+    </LinearLayout>
+</LinearLayout>

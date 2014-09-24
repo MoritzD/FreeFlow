@@ -57,7 +57,7 @@ public class MainActivity extends Activity {
             startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
         }
         if(id == R.id.buttonAbout){
-            Intent intent = new Intent(getApplicationContext(), DialogActivity.class);
+            Intent intent = new Intent(getApplicationContext(), AboutActivity.class);
             startActivity(intent);
         }
     }

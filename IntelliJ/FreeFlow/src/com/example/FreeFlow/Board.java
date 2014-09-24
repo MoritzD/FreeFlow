@@ -4,26 +4,15 @@ package com.example.FreeFlow;
  * Created by Sami on 05.09.14.
  */
 
-import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.*;
 import android.media.MediaPlayer;
-import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,7 +65,7 @@ public class Board extends View {
     private boolean onPath = false;
     private boolean onDrawCircle = false;
     private Vibrator v;
-    public MediaPlayer mpblop,mpsword;
+    public MediaPlayer mpblop,mpsword,mpwin;
 
 
     private int xToCol( int x ) {
@@ -104,7 +93,9 @@ public class Board extends View {
         v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         mpblop = MediaPlayer.create(context, R.raw.blop);
         mpsword = MediaPlayer.create(context, R.raw.sword_strike);
+        mpwin = MediaPlayer.create(context, R.raw.syrma);
 
+        //bla
 
     }
 
@@ -112,7 +103,7 @@ public class Board extends View {
     @Override
     protected void onMeasure( int widthMeasureSpec, int heightMeasureSpec ) {
 
-        super.onMeasure( widthMeasureSpec, heightMeasureSpec );
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
         int width  = getMeasuredWidth() - getPaddingLeft() - getPaddingRight();
         int height = getMeasuredHeight() - getPaddingTop() - getPaddingBottom();
@@ -321,8 +312,11 @@ public class Board extends View {
             flowsConnected.setText("Flows: " + pathsConnected + "/" + mCellPath.size());
 
 
-
-            if(vibsound) {
+            if(pathsConnected == mCellPath.size()){
+                editDB(mPuzzle.mPackId, Integer.parseInt(mPuzzle.mChallengeId),
+                        Integer.parseInt(mPuzzle.mId),moves);
+            }
+            else if(vibsound) {
                 if (GlobalVibrate)
                     v.vibrate(50);
                 if (GlobalSound) {
@@ -340,10 +334,6 @@ public class Board extends View {
             }
             vibsound = vibsoundcut = false;
 
-            if(pathsConnected == mCellPath.size()){
-                editDB(mPuzzle.mPackId, Integer.parseInt(mPuzzle.mChallengeId),
-                        Integer.parseInt(mPuzzle.mId),moves);
-            }
 
         }
 
@@ -469,6 +459,9 @@ public class Board extends View {
 
 
     public void editDB(String pack, int challengeId, int levelId, int moves){
+        if(GlobalSound)
+            mpwin.start();
+
 
         if(highscore == 0) {
             scoreAdapter.insertScore(pack, challengeId, levelId, moves);

@@ -6,4 +6,5 @@
     <string name="btn_next_dialog_label">Next</string>
     <string name="btn_again_dialog_label">Again</string>
     <string name="btn_pref_dialog_label">Prev</string>
+    <string name="About">This App was createt by Sami Ede and Moritz Dötterl as an assignment in the course "App Development - Android" at the University of Reykjavik in fall semester 2014!</string>
 </resources>
