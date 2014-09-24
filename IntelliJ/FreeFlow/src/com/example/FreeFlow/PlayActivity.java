@@ -46,6 +46,7 @@ public class PlayActivity extends Activity {
         reset = (ImageButton) findViewById(R.id.btn_reset);
         next = (ImageButton) findViewById(R.id.btn_next_p);
 
+        //int color = settings.getInt("pathColor", Color.CYAN);
 
         prev.setOnClickListener(ocl);
         reset.setOnClickListener(ocl);
@@ -108,9 +109,17 @@ public class PlayActivity extends Activity {
 
     public void startDialog() {
         Intent intent = new Intent(getApplicationContext(), DialogActivity.class);
-        startActivity(intent);
-    }
+        Bundle b = new Bundle();
+        b.putInt("challengeId",challegeId);
+        b.putInt("puzzleId", puzzleId);
+        intent.putExtras(b);
+        startActivityForResult(intent, 1);
 
+
+
+        //finish();
+
+    }
     protected class onClickListener implements View.OnClickListener {
 
         @Override
