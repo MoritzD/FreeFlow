@@ -3,6 +3,9 @@ package com.example.FreeFlow;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -53,6 +56,10 @@ public class MainActivity extends Activity {
         if(id == R.id.buttonSettings){
             startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
         }
+        if(id == R.id.buttonAbout){
+            Intent intent = new Intent(getApplicationContext(), DialogActivity.class);
+            startActivity(intent);
+        }
     }
 
     private void readPack( InputStream is, List<Pack> packs){
@@ -84,7 +91,23 @@ public class MainActivity extends Activity {
         }
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch(item.getItemId()) {
+            case R.id.action_settings:
+                startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+                break;
+            default:
+              //  onBackPressed();
+        }
+        return true;
+    }
 
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.actionbar,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
 }

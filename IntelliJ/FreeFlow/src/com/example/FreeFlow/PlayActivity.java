@@ -1,10 +1,14 @@
 package com.example.FreeFlow;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -12,7 +16,7 @@ import android.widget.TextView;
  * Created by Sami on 08.09.14.
  */
 public class PlayActivity extends Activity {
-
+    Board board = null;
 
 
     @Override
@@ -24,11 +28,13 @@ public class PlayActivity extends Activity {
         int challegeId = b.getInt("challengeId");
         int puzzleId = b.getInt("puzzleId");
 
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+
         //SharedPreferences settings = getSharedPreferences("ColorPref", MODE_PRIVATE);
 
         //int color = settings.getInt("pathColor", Color.CYAN);
 
-        Board board = (Board) findViewById(R.id.board);
+        board = (Board) findViewById(R.id.board);
 
         SharedPreferences settings = getSharedPreferences( "SoundVibration", MODE_PRIVATE );
 
@@ -37,6 +43,7 @@ public class PlayActivity extends Activity {
 
         board.setVibrate(Vib);
         board.setSound(Sou);
+        board.setActivity(this);
 
         board.setLevel(Global.getInstance().mChallenge.get(challegeId).mPuzzle.get(puzzleId));
         board.setTextFields((TextView) findViewById(R.id.flowsConnected),
@@ -51,4 +58,42 @@ public class PlayActivity extends Activity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences settings = getSharedPreferences( "SoundVibration", MODE_PRIVATE );
+
+        Boolean Vib = settings.getBoolean( "Vibrate", true );
+        Boolean Sou =  settings.getBoolean( "Sound", true );
+
+        board.setVibrate(Vib);
+        board.setSound(Sou);
+    }
+
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch(item.getItemId()) {
+            case R.id.action_settings:
+                startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+                break;
+            default:
+                  onBackPressed();
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.actionbar,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    public void startDialog() {
+        Intent intent = new Intent(getApplicationContext(), DialogActivity.class);
+        startActivity(intent);
+    }
 }
