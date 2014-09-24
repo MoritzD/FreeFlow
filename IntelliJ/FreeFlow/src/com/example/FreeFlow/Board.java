@@ -4,6 +4,7 @@ package com.example.FreeFlow;
  * Created by Sami on 05.09.14.
  */
 
+import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.*;
@@ -38,6 +39,8 @@ public class Board extends View {
     protected static int m_paddingTop;
 
     public Puzzle mPuzzle = null;
+
+    public PlayActivity myActivity = null;
 
     private int prevPath;
 
@@ -408,6 +411,10 @@ public class Board extends View {
         }
 
 
+        movesMade.setText("Moves: " + 0);
+        flowsConnected.setText("Flows: " + pathsConnected + "/" + mCellPath.size());
+        best.setText("Best: " + 0);
+
        if(GlobalVibrate)
             v.vibrate(50);
       // if(GlobalSound)
@@ -462,6 +469,7 @@ public class Board extends View {
 
 
     public void editDB(String pack, int challengeId, int levelId, int moves){
+        myActivity.startDialog();
 
         if(highscore == 0) scoreAdapter.insertScore(pack, challengeId, levelId, moves);
         else if(highscore > moves) {
@@ -469,7 +477,8 @@ public class Board extends View {
         }
         best.setText("Best: " + moves);
 
-    }
 
+    }
+    public void setActivity(PlayActivity act){ myActivity = act; }
 
 }
