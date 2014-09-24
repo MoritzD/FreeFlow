@@ -29,6 +29,9 @@
         <activity android:name=".PackList">
         </activity>
         <activity android:name=".SettingsActivity"/>
+        <activity android:name=".DialogActivity"
+                  android:theme="@android:style/Theme.Dialog">
+        </activity>
 
 
     </application>

@@ -4,9 +4,14 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Switch;
+import android.widget.Toast;
 
 /**
  * Created by moe on 24.09.14.
@@ -21,6 +26,7 @@ public class SettingsActivity extends Activity {
         Vibration=(Switch) findViewById(R.id.vibration);
         Sound = (Switch) findViewById(R.id.sound);
 
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 
         SharedPreferences settings = getSharedPreferences( "SoundVibration", MODE_PRIVATE );
 
@@ -59,4 +65,23 @@ public class SettingsActivity extends Activity {
             finish();
         }
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch(item.getItemId()) {
+            case R.id.action_settings:
+
+                break;
+            default:
+                onBackPressed();
+        }
+        return true;
+    }
+
+ /*   @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.actionbar,menu);
+        return super.onCreateOptionsMenu(menu);
+    }*/
+
 }

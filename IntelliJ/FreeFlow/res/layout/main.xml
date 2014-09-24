@@ -2,28 +2,41 @@
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="fill_parent"
-              android:layout_height="fill_parent">
+              android:layout_height="fill_parent"
+              android:gravity="center">
 
     <Button
             android:id="@+id/buttonPlay"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Play"
             android:onClick="buttonClick"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="45dp"
+            android:paddingRight="45dp"
             />
     <Button
             android:id="@+id/buttonSettings"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Settings"
             android:onClick="buttonClick"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
             />
     <Button
             android:id="@+id/buttonAbout"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="About"
             android:onClick="buttonClick"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
             />
 
 

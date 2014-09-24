@@ -3,6 +3,9 @@ package com.example.FreeFlow;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
@@ -23,6 +26,8 @@ public class PackList extends ListActivity {
 
     private Global mGlobals =  Global.getInstance();
 
+
+
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -30,9 +35,10 @@ public class PackList extends ListActivity {
         PackAdapter adapter = new PackAdapter(this, R.layout.list_pack, mGlobals.mPacks);
 
         setListAdapter(adapter);
-
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
+
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id){
@@ -57,7 +63,6 @@ public class PackList extends ListActivity {
 
         startActivity(intent);
     }
-
 
     private void readChallenge( InputStream is, List<Challenge> challenge){
 
@@ -108,6 +113,23 @@ public class PackList extends ListActivity {
         }
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch(item.getItemId()) {
+            case R.id.action_settings:
+                startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+                break;
+            default:
+                  onBackPressed();
+        }
+        return true;
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.actionbar,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
 }

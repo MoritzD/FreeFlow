@@ -9,40 +9,33 @@
 
 
         <Switch
+                android:paddingTop="10dp"
+                android:paddingRight="40dp"
+                android:paddingLeft="20dp"
                 android:id="@+id/vibration"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Vibration"
                 android:onClick="switchClicked"
-
+                android:paddingBottom="30dp"
                 />
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                  android:orientation="vertical"
-                  android:layout_width="match_parent"
-                  android:layout_height="30dp"
-                  android:gravity="center"
-            >
-    </LinearLayout>
         <Switch
+                android:paddingRight="40dp"
+                android:paddingLeft="20dp"
                 android:id="@+id/sound"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Sound"
                 android:onClick="switchClicked"
+                android:paddingBottom="30dp"
 
                 />
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                  android:orientation="vertical"
-                  android:layout_width="match_parent"
-                  android:layout_height="30dp"
-                  android:gravity="center"
-            >
-    </LinearLayout>
+
 
         <Button
                 android:id="@+id/deleteButton"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="reset progress"
                 android:onClick="ButtonClicked"
@@ -57,10 +50,12 @@
             >
         <Button
             android:id="@+id/buttonsave"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Save Settings"
             android:onClick="ButtonClicked"
+            android:paddingBottom="10dp"
+            android:layout_gravity="center_horizontal"
 
             />
     </LinearLayout>

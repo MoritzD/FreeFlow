@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">FreeFlow</string>
+    <string name="action_settings">Settings</string>
+    <string name="dialog_text">Winner!</string>
+    <string name="btn_next_dialog_label">Next</string>
+    <string name="btn_again_dialog_label">Again</string>
+    <string name="btn_pref_dialog_label">Prev</string>
 </resources>
