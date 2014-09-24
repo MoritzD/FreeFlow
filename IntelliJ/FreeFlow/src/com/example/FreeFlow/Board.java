@@ -75,6 +75,7 @@ public class Board extends View {
 
         v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         //mp = MediaPlayer.create(context, R.raw.sound1);
+        //bla
     }
 
 
