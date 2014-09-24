@@ -126,14 +126,14 @@ public class PlayActivity extends Activity {
                 //int newChalenge = data.getIntExtra("challengeId",0);
                 int newPuzzleId = data.getIntExtra("puzzleId",0);
 
-                if(newPuzzleId != puzzleId) {
+                //if(newPuzzleId != puzzleId) {
                     board.setLevel(Global.getInstance().mChallenge.get(challengeId).mPuzzle.get(newPuzzleId));
                     board.loadLevel();
                     puzzleId = newPuzzleId;
-                }
-                else{
-                    board.resetBoard();
-                }
+                //}
+                //else{
+                 //   board.resetBoard();
+                //}
             }
             if (resultCode == RESULT_CANCELED) {
                 //Write your code if there's no result
@@ -147,7 +147,7 @@ public class PlayActivity extends Activity {
         public void onClick(View view) {
             switch(view.getId()){
                 case R.id.btn_prev:
-                    if(puzzleId-1>0) {
+                    if(puzzleId-1>=0) {
                         board.setLevel(Global.getInstance().mChallenge.get(challengeId).mPuzzle.get(puzzleId - 1));
                         board.loadLevel();
                         puzzleId = puzzleId - 1;
