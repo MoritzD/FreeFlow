@@ -445,6 +445,7 @@ public class Board extends View {
         }
         else highscore = 0;
 
+
         movesMade.setText("Moves: " + 0);
         flowsConnected.setText("Flows: " + pathsConnected + "/" + mCellPath.size());
         best.setText("Best: " + highscore);
@@ -498,6 +499,7 @@ public class Board extends View {
     public void resetBoard(){
         movesMade.setText("Moves:" + 0);
         pathsConnected = 0;
+        moves = 0;
         for (Cellpath aMCellPath : mCellPath) {
             aMCellPath.reset();
             flowsConnected.setText("Flows: " + pathsConnected + "/" + mCellPath.size());
